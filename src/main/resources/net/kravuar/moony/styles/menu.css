@@ -13,10 +13,17 @@
     -fx-border-width: 0px 0px 3px 0px;
 }
 
+.settings:hover{
+    -fx-background-color: #6C5C76;
+    -fx-text-fill: #C39BCB;
+    -fx-border-color: #7b2391;
+    -fx-border-width: 0px 0px 3px 0px;
+}
+
 
 .exit:hover{
     -fx-background-color: #6C5C76;
     -fx-text-fill: #C39BCB;
-    -fx-border-color: #651679;
+    -fx-border-color: #480c57;
     -fx-border-width: 0px 0px 3px 0px;
 }

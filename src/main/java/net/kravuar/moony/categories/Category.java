@@ -25,8 +25,7 @@ public class Category {
 
     @Override
     public String toString(){
-
-        return null;
+        return name;
     }
 
 

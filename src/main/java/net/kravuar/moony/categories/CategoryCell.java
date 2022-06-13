@@ -1,5 +1,6 @@
 package net.kravuar.moony.categories;
 
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -16,6 +17,7 @@ public class CategoryCell extends ListCell<Category> {
         name = new Text();
         rect = new Rectangle();
         box = new HBox(name,rect);
+        getStylesheets().add("file:src/main/resources/net/kravuar/moony/styles/categoriesList.css");
     }
 
     @Override

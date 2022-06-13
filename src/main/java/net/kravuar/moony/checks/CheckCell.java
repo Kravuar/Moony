@@ -1,5 +1,6 @@
 package net.kravuar.moony.checks;
 
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
@@ -7,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import net.kravuar.moony.categories.Category;
 import net.kravuar.moony.categories.CategoryCellFactory;
 
@@ -37,6 +39,7 @@ public class CheckCell extends ListCell<Check> {
         pane.setLeft(categories);
         pane.setCenter(dollar);
         pane.setRight(data);
+        getStylesheets().add("file:src/main/resources/net/kravuar/moony/styles/checksList.css");
     }
 
     @Override
@@ -53,11 +56,14 @@ public class CheckCell extends ListCell<Check> {
             else
                 dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Expence.png"));
             primaryCategory.setText(check.getPrimaryCategory().toString());
+            primaryCategory.setTextAlignment(TextAlignment.CENTER);
             for(Category category : check.getCategories())
                 categories.getItems().add(category);
 
 
+
             setGraphic(pane);
+            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         } else {
             setGraphic(null);
         }
