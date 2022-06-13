@@ -1,0 +1,22 @@
+.storage:hover{
+    -fx-background-color: #6C5C76;
+    -fx-text-fill: #C39BCB;
+    -fx-border-color: #E370FF;
+    -fx-border-width: 0px 0px 3px 0px;
+}
+
+
+.statistics:hover{
+    -fx-background-color: #6C5C76;
+    -fx-text-fill: #C39BCB;
+    -fx-border-color: #AE42C9;
+    -fx-border-width: 0px 0px 3px 0px;
+}
+
+
+.exit:hover{
+    -fx-background-color: #6C5C76;
+    -fx-text-fill: #C39BCB;
+    -fx-border-color: #651679;
+    -fx-border-width: 0px 0px 3px 0px;
+}
