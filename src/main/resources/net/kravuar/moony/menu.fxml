@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
@@ -14,6 +15,9 @@
          <image>
             <Image url="@assets/Theme.jpg" />
          </image>
+         <effect>
+            <ColorAdjust brightness="0.14" contrast="-0.09" hue="0.11" saturation="1.0" />
+         </effect>
       </ImageView>
       <JFXButton accessibleText="STORAGE" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#changeScene" styleClass="storage" stylesheets="@styles/menu.css" text="STORAGE" textFill="#503c54">
          <VBox.margin>

@@ -23,11 +23,11 @@ public class StorageController implements Initializable {
         list.getItems().addAll(
                 new Check(
                         new ArrayList(Arrays.asList(new Category("kek","#58BA67"), new Category("geg","#C2F82E"))),
-                        new Category("gavno","#58BA67"),
+                        new Category("bek","#58BA67"),
                         50,
                         true,
                         LocalDate.of(2021,5,21),
-                        "a check description"
+                        "a check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check description"
                 ),
                 new Check(
                         new ArrayList(Arrays.asList(new Category("bebr","#AB68AF"), new Category("koop","#589BAF"))),
@@ -35,7 +35,7 @@ public class StorageController implements Initializable {
                         190,
                         false,
                         LocalDate.of(2021,8,15),
-                        "another description"
+                        "another descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check description\na check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check description\na check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check description\na check description\na check description\n\n\na check description"
                 ));
     }
 

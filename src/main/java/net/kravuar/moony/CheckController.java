@@ -2,8 +2,11 @@ package net.kravuar.moony;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.Settable;
 
@@ -13,12 +16,13 @@ public class CheckController implements Settable<Check> {
     @FXML
     private Label date;
     @FXML
-    private Label description;
+    private TextArea description;
     @FXML
     private ImageView dollar;
     @FXML
     private Label primaryCategory;
-
+    @FXML
+    private ListView<Category> categories;
 
     @Override
     public void set(Check check){
@@ -30,6 +34,8 @@ public class CheckController implements Settable<Check> {
         else
             dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Expence.png"));
         primaryCategory.setText(check.getPrimaryCategory().toString());
+        for (Category category: check.getCategories())
+            categories.getItems().add(category);
     }
     //changers
 }
