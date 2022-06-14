@@ -6,4 +6,6 @@ module net.moony.moony {
 
     opens net.kravuar.moony to javafx.fxml;
     exports net.kravuar.moony;
+    exports net.kravuar.moony.customList;
+    opens net.kravuar.moony.customList to javafx.fxml;
 }

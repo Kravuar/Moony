@@ -1,7 +1,5 @@
 package net.kravuar.moony.checks;
 
-import net.kravuar.moony.categories.Category;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 

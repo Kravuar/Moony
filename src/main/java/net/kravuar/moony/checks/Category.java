@@ -1,4 +1,4 @@
-package net.kravuar.moony.categories;
+package net.kravuar.moony.checks;
 
 public class Category {
     private String name;

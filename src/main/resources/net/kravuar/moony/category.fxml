@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXListView?>
+
+
+<JFXListView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="category" stylesheets="@styles/check.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" />
