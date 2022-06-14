@@ -16,6 +16,7 @@ public class Cell<T,C extends Settable<T>> extends ListCell<T> {
             FXMLLoader loader = new FXMLLoader(App.class.getResource(path));
             pane = loader.load();
             controller = loader.getController();
+
         } catch (IOException exc) { throw new RuntimeException(exc); }
     }
 

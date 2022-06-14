@@ -1,12 +1,15 @@
-.check{
-    -fx-background-color: #DFC3E6;
+.category.name {
+    -fx-background-color: #d3c8e0;
+    -fx-font-size: 18;
+    -fx-text-fill: #9c6cc9;
+}
+.category.pane {
+    -fx-background-color: #d3c8e0;
+    -fx-border-color: #927bb4;
+    -fx-border-width: 3px 0px 3px 0px;
 }
 
-.category{
-    -fx-border-color: #A44FB9;
-}
-
-.label {
+.myLabel {
     -fx-background-color: #d3c8e0;
     -fx-font-size: 18;
     -fx-text-fill: #9c6cc9;
@@ -25,7 +28,7 @@
 
 }
 
-.vbox {
+.box {
     -fx-border-color: #b589c0;
     -fx-border-width: 0px 2px 3px 2px;
 }
