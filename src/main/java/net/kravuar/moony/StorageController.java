@@ -4,12 +4,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.CellFactory;
 
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.*;
 
 public class StorageController implements Initializable {
@@ -17,26 +15,9 @@ public class StorageController implements Initializable {
     @FXML
     private ListView<Check> list;
 
-
     @FXML
     void addCheck(ActionEvent event) {
-        list.getItems().addAll(
-                new Check(
-                        new ArrayList(Arrays.asList(new Category("kek","#58BA67"), new Category("geg","#C2F82E"))),
-                        new Category("bek","#58BA67"),
-                        50,
-                        true,
-                        LocalDate.of(2021,5,21),
-                        "a check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check description"
-                ),
-                new Check(
-                        new ArrayList(Arrays.asList(new Category("bebr","#AB68AF"), new Category("koop","#589BAF"))),
-                        new Category("bebr","#AB68AF"),
-                        190,
-                        false,
-                        LocalDate.of(2021,8,15),
-                        "another descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check description\na check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check description\na check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check descriptiona check description\na check description\na check description\n\n\na check description"
-                ));
+
     }
 
     @FXML

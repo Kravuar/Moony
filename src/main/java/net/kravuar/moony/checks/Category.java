@@ -2,7 +2,7 @@ package net.kravuar.moony.checks;
 
 public class Category {
     private String name;
-    private String color;  // #......
+    private String color;
 
     public Category(String name, String color) {
         this.name = name;
