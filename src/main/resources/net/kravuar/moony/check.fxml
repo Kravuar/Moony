@@ -30,6 +30,7 @@
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#addCategory" text="Add" />
                   <MenuItem mnemonicParsing="false" onAction="#removeCategory" text="Remove" />
+                  <MenuItem mnemonicParsing="false" onAction="#setAsPrimary" text="Set as Primary" />
               </items>
             </ContextMenu>
          </contextMenu></ListView>
