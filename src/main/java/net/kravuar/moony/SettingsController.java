@@ -25,6 +25,7 @@ public class SettingsController implements Initializable {
 
 
 
+
     @FXML
     void addCategory() throws IOException {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("addCategory.fxml"));
