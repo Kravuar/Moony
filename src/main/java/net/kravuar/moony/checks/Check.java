@@ -10,14 +10,16 @@ public class Check {
     private boolean income;
     private LocalDate date;
     private String description;
+    private int id;
 
-    public Check(ArrayList<Category> categories, Category primaryCategory, double amount, boolean income, LocalDate date, String description) {
+    public Check(ArrayList<Category> categories, Category primaryCategory, double amount, boolean income, LocalDate date, String description, int id) {
         this.categories = categories;
         this.primaryCategory = primaryCategory;
         this.amount = amount;
         this.income = income;
         this.date = date;
         this.description = description;
+        this.id = id;
     }
 
     public String getDescription() {
@@ -38,6 +40,10 @@ public class Check {
     public LocalDate getDate() {
         return date;
     }
+    public int getId() {
+        return id;
+    }
+
 
     public void setDescription(String description) {
         this.description = description;
@@ -56,5 +62,8 @@ public class Check {
     }
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 }

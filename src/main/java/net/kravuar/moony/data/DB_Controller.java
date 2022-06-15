@@ -4,13 +4,11 @@ import net.kravuar.moony.App;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
-public class BD_Controller {
+public class DB_Controller {
     private static final String SQL_SELECT_CATEGORIES = "select * from categories";
     private static final String SQL_GET_CATEGORY_COLOR = "select 1 from categories where name = ?";
     private static final String SQL_INSERT_CATEGORY = "insert into categories (name,color) values (?,?)";
@@ -19,7 +17,7 @@ public class BD_Controller {
     private static final String SQL_UPDATE_CATEGORIES_COLOR = "update categories set color = ? where name = ?";
 
 
-
+    private static final String SQL_SELECT_CHECKS_ID = "select distinct id from checks";
     private static final String SQL_SELECT_CHEKCS = "select * from checks order by date desc";
     private static final String SQL_INSERT_CHECK = "insert into checks (amount,description,date,income,primary,categories) values (?,?,?,?,?,?)";
     private static final String SQL_REMOVE_CHECK = "delete from checks where id = ?";
@@ -88,8 +86,17 @@ public class BD_Controller {
                                  checks.getDouble("amount"),
                                  checks.getBoolean("income"),
                                  checks.getDate("date").toLocalDate(),
-                                 checks.getString("description")));
+                                 checks.getString("description"),
+                                 checks.getInt("id")));
         }
+        return result;
+    }
+    public static ArrayList<Integer> getIds() throws SQLException{
+        Statement statement = App.connection.createStatement();
+        ResultSet checks = statement.executeQuery(SQL_SELECT_CHECKS_ID);
+        ArrayList<Integer> result = new ArrayList<>();
+        while (checks.next())
+            result.add(checks.getInt("id"));
         return result;
     }
     public static void check_upd_amount(double amount, int id) throws SQLException {
@@ -117,13 +124,13 @@ public class BD_Controller {
         check_upd_primary.setInt(2,id);
         check_upd_primary.executeUpdate();
     }
-    public static void check_upd_categories_append(Category category, int id) throws SQLException {
-        check_upd_categories_append.setString(1, category.getName());
+    public static void check_upd_categories_append(String name, int id) throws SQLException {
+        check_upd_categories_append.setString(1, name);
         check_upd_categories_append.setInt(2, id);
         check_upd_categories_append.executeUpdate();
     }
-    public static void check_upd_categories_remove(Category category, int id) throws SQLException {
-        check_upd_categories_remove.setString(1, category.getName());
+    public static void check_upd_categories_remove(String name, int id) throws SQLException {
+        check_upd_categories_remove.setString(1, name);
         check_upd_categories_remove.setInt(2, id);
         check_upd_categories_remove.executeUpdate();
     }
@@ -155,8 +162,8 @@ public class BD_Controller {
         return color.getString("color");
     }
 //    public static void categories_upd_name(Category category, String newName) {}
-    public static void categories_upd_color(Category category, String name) throws SQLException {
-        categories_upd_color.setString(1 ,category.getColor());
+    public static void categories_upd_color(String color, String name) throws SQLException {
+        categories_upd_color.setString(1 , color);
         categories_upd_color.setString(2, name);
         categories_upd_color.executeUpdate();
     }
@@ -165,8 +172,8 @@ public class BD_Controller {
         categories_upd_add.setString(2,category.getColor());
         categories_upd_add.executeUpdate();
     }
-    public static void categories_upd_remove(Category category) throws SQLException {
-        categories_upd_remove.setString(1,category.getName());
+    public static void categories_upd_remove(String name) throws SQLException {
+        categories_upd_remove.setString(1, name);
         categories_upd_remove.executeUpdate();
     }
 }

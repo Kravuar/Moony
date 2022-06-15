@@ -11,8 +11,11 @@ import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.CellFactory;
 import net.kravuar.moony.customList.Settable;
+import net.kravuar.moony.data.DB_Controller;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class CheckController implements Settable<Check>, Initializable {
@@ -61,27 +64,36 @@ public class CheckController implements Settable<Check>, Initializable {
 
     }
     @FXML
-    void changeDollar() {
+    void changeDollar() throws SQLException {
         check.setIncome(!check.isIncome());
         if (check.isIncome())
             dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Income.png"));
         else
             dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Expence.png"));
+        DB_Controller.check_upd_income(check.isIncome(), check.getId());
     }
     @FXML
     void addCategory() {
 
     }
     @FXML
-    void removeCategory(ActionEvent event) {
+    void removeCategory(ActionEvent event) throws SQLException {
+        categories.getItems().removeIf(category -> Objects.equals(category.getName(), ((MenuItem) event.getTarget()).getText()));
+        DB_Controller.check_upd_categories_remove(((MenuItem) event.getTarget()).getText(), check.getId());
+    }
 
+    private void changeDescription() throws SQLException {
+        check.setDescription(description.toString());
+        DB_Controller.check_upd_descr(check.getDescription(), check.getId());
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         description.focusedProperty().addListener((obs, oldp, newp) -> {
-            if (!newp)
-                check.setDescription(description.toString());
+            if (!newp) {
+                try { changeDescription();}
+                catch (SQLException e) { throw new RuntimeException(e); }
+            }
         });
     }
 }
