@@ -1,7 +1,6 @@
 package net.kravuar.moony;
 
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -63,21 +62,28 @@ public class CheckController implements Settable<Check>, Initializable {
 
     @FXML
     void updateAmount() throws IOException {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("addCheckCategory.fxml"));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("updateAmount.fxml"));
         Parent parent = loader.load();
-        AddCheckCategoryController controller = loader.getController();
-        controller.setLabel(amount);
+        AmountController controller = loader.getController();
+        controller.setData(amount, check.getId());
         Stage stage = new Stage(StageStyle.UNDECORATED);
         stage.setScene(new Scene(parent));
         stage.show();
     }
     @FXML
-    void updateDate() {
-
+    void updateDate() throws IOException {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("updateDate.fxml"));
+        Parent parent = loader.load();
+        DateController controller = loader.getController();
+        controller.setData(date, check.getId());
+        Stage stage = new Stage(StageStyle.UNDECORATED);
+        stage.setScene(new Scene(parent));
+        stage.show();
     }
     @FXML
-    void setAsPrimary() {
+    void setAsPrimary() throws SQLException {
         primaryCategory.setText(categories.getSelectionModel().getSelectedItem().getName());
+        DB_Controller.check_upd_primary(DB_Controller.categoryGetId(primaryCategory.getText()), check.getId());
     }
     @FXML
     void changeDollar() throws SQLException {
@@ -98,7 +104,7 @@ public class CheckController implements Settable<Check>, Initializable {
     void removeCategory() throws SQLException {
         String name = categories.getSelectionModel().getSelectedItem().getName();
         categories.getItems().removeIf(category -> Objects.equals(category.getName(), name));
-        DB_Controller.check_upd_categories_remove(DB_Controller.getId(name), check.getId());
+        DB_Controller.check_upd_categories_remove(DB_Controller.categoryGetId(name), check.getId());
     }
 
     private void changeDescription() throws SQLException {

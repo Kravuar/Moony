@@ -23,11 +23,11 @@ public class Cell<T,C extends Settable<T>> extends ListCell<T> {
     @Override
     public void updateItem(T obj, boolean empty) {
         super.updateItem(obj, empty);
-        if (obj != null && !empty){
+        if (empty){
+            setGraphic(null);
+        } else {
             controller.set(obj);
             setGraphic(pane);
-        } else {
-            setGraphic(null);
         }
     }
 }

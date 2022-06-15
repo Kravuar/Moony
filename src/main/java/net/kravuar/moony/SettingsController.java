@@ -52,9 +52,11 @@ public class SettingsController implements Initializable {
         Category category = list.getSelectionModel().getSelectedItem();
         if (category != null) {
             String name = category.getName();
+            int categoryId = DB_Controller.categoryGetId(name);
             list.getItems().remove(category);
             for (int id : DB_Controller.getIds())
-                DB_Controller.check_upd_categories_remove(DB_Controller.getId(name), id);
+                DB_Controller.check_upd_categories_remove(categoryId, id);
+            DB_Controller.categories_upd_remove(categoryId);
         }
     }
 

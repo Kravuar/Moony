@@ -26,8 +26,6 @@ public class AddCategoryController {
         String cname = name.getText();
         String cColor = color.getValue().toString();
         Category category = new Category(cname,cColor);
-        Node source = ((Node)  event.getSource());
-        Stage stage  = (Stage) source.getScene().getWindow();
         if (!isEditMode){
             DB_Controller.categories_upd_add(category);
             list.getItems().add(category);
@@ -35,15 +33,15 @@ public class AddCategoryController {
         else {
             Category toChange = list.getSelectionModel().getSelectedItem();
             if (toChange != null){
-                DB_Controller.categories_upd_color(cColor, DB_Controller.getId(toChange.getName()));
-                DB_Controller.categories_upd_name(cname, DB_Controller.getId(toChange.getName()));
+                DB_Controller.categories_upd_color(cColor, DB_Controller.categoryGetId(toChange.getName()));
+                DB_Controller.categories_upd_name(cname, DB_Controller.categoryGetId(toChange.getName()));
                 toChange.setName(cname);
                 toChange.setColor(cColor);
                 list.getSelectionModel().clearSelection();
             }
             isEditMode = false;
         }
-        stage.close();
+        ((Stage) ((Node)  event.getSource()).getScene().getWindow()).close();
     }
 
     public void setData(ListView<Category> list, String cname) {
