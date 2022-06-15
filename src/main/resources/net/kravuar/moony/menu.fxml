@@ -41,7 +41,7 @@
             <MaterialDesignIconView glyphName="CHART_BAR" />
          </graphic>
       </JFXButton>
-      <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#settings" styleClass="settings" stylesheets="@styles/menu.css" text="SETTINGS" textFill="#503c54">
+      <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#changeScene" styleClass="settings" stylesheets="@styles/menu.css" text="SETTINGS" textFill="#503c54">
          <font>
             <Font size="28.0" />
          </font>

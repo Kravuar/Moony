@@ -30,18 +30,18 @@ public class SettingsController implements Initializable {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("addCategory.fxml"));
         Parent parent = loader.load();
         AddCategoryController controller = loader.getController();
-        controller.setList(list);
+        controller.setData(list,"");
         Stage stage = new Stage(StageStyle.UNDECORATED);
         stage.setScene(new Scene(parent));
         stage.show();
     }
 
     @FXML
-    void changeCategory(ActionEvent event) throws IOException {
+    void changeCategory() throws IOException {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("addCategory.fxml"));
         Parent parent = loader.load();
         AddCategoryController controller = loader.getController();
-        controller.setList(list);
+        controller.setData(list,list.getSelectionModel().getSelectedItem().getName());
         controller.setEditMode(true);
         Stage stage = new Stage(StageStyle.UNDECORATED);
         stage.setScene(new Scene(parent));
@@ -50,10 +50,12 @@ public class SettingsController implements Initializable {
 
     @FXML
     void removeCategory(ActionEvent event) throws SQLException {
-        //changes inure after restart
-        String category = (((MenuItem) event.getTarget()).getText());
-        for (int id : DB_Controller.getIds())
-            DB_Controller.check_upd_categories_remove(category, id);
+        Category category = list.getSelectionModel().getSelectedItem();
+        if (category != null) {
+            String name = category.getName();
+            for (int id : DB_Controller.getIds())
+                DB_Controller.check_upd_categories_remove(name, id);
+        }
     }
 
     @Override

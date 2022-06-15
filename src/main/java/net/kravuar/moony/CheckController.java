@@ -59,6 +59,7 @@ public class CheckController implements Settable<Check>, Initializable {
     void updateAmount() {
 
     }
+
     @FXML
     void updateDate() {
 
@@ -81,8 +82,9 @@ public class CheckController implements Settable<Check>, Initializable {
 
     @FXML
     void removeCategory(ActionEvent event) throws SQLException {
-        categories.getItems().removeIf(category -> Objects.equals(category.getName(), categories.getSelectionModel().getSelectedItem().getName()));
-        DB_Controller.check_upd_categories_remove(((MenuItem) event.getTarget()).getText(), check.getId());
+        String name = categories.getSelectionModel().getSelectedItem().getName();
+        categories.getItems().removeIf(category -> Objects.equals(category.getName(), name));
+        DB_Controller.check_upd_categories_remove(name, check.getId());
     }
 
     private void changeDescription() throws SQLException {

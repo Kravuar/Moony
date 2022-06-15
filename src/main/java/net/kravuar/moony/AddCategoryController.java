@@ -23,14 +23,32 @@ public class AddCategoryController {
 
     @FXML
     void add(ActionEvent event) throws SQLException {
-        Category category = new Category(name.getText(),color.getValue().toString());
-        DB_Controller.categories_upd_add(category);
+        String cname = name.getText();
+        String cColor = color.getValue().toString();
+        Category category = new Category(cname,cColor);
         Node source = ((Node)  event.getSource());
         Stage stage  = (Stage) source.getScene().getWindow();
-        list.getItems().add(category);
+        if (!isEditMode){
+            DB_Controller.categories_upd_add(category);
+            list.getItems().add(category);
+        }
+        else {
+            Category toChange = list.getSelectionModel().getSelectedItem();
+            if (toChange != null){
+                DB_Controller.categories_upd_color(cColor,toChange.getName());
+                DB_Controller.categories_upd_name(cname,toChange.getName());
+                toChange.setName(cname);
+                toChange.setColor(cColor);
+                list.getSelectionModel().clearSelection();
+            }
+            isEditMode = false;
+        }
         stage.close();
     }
 
-    public void setList(ListView<Category> list) {this.list = list;}
+    public void setData(ListView<Category> list, String cname) {
+        this.list = list;
+        name.setText(cname);
+    }
     public void setEditMode(boolean condition) {isEditMode = condition;}
 }

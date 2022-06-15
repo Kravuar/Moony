@@ -171,6 +171,7 @@ public class DB_Controller {
     public static void categories_upd_name(String newName, String name) throws SQLException {
         categories_upd_name.setString(1, newName);
         categories_upd_name.setString(2, name);
+        categories_upd_name.executeUpdate();
     }
     public static void categories_upd_color(String color, String name) throws SQLException {
         categories_upd_color.setString(1 , color);
