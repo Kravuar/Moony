@@ -84,7 +84,7 @@ public class CheckController implements Settable<Check>, Initializable {
     void removeCategory(ActionEvent event) throws SQLException {
         String name = categories.getSelectionModel().getSelectedItem().getName();
         categories.getItems().removeIf(category -> Objects.equals(category.getName(), name));
-        DB_Controller.check_upd_categories_remove(name, check.getId());
+        DB_Controller.check_upd_categories_remove(DB_Controller.getId(name), check.getId());
     }
 
     private void changeDescription() throws SQLException {

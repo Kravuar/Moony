@@ -35,8 +35,8 @@ public class AddCategoryController {
         else {
             Category toChange = list.getSelectionModel().getSelectedItem();
             if (toChange != null){
-                DB_Controller.categories_upd_color(cColor,toChange.getName());
-                DB_Controller.categories_upd_name(cname,toChange.getName());
+                DB_Controller.categories_upd_color(cColor, DB_Controller.getId(toChange.getName()));
+                DB_Controller.categories_upd_name(cname, DB_Controller.getId(toChange.getName()));
                 toChange.setName(cname);
                 toChange.setColor(cColor);
                 list.getSelectionModel().clearSelection();

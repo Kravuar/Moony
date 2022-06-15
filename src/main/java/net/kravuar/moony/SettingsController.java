@@ -49,12 +49,13 @@ public class SettingsController implements Initializable {
     }
 
     @FXML
-    void removeCategory(ActionEvent event) throws SQLException {
+    void removeCategory() throws SQLException {
         Category category = list.getSelectionModel().getSelectedItem();
         if (category != null) {
             String name = category.getName();
+            list.getItems().remove(category);
             for (int id : DB_Controller.getIds())
-                DB_Controller.check_upd_categories_remove(name, id);
+                DB_Controller.check_upd_categories_remove(DB_Controller.getId(name), id);
         }
     }
 
