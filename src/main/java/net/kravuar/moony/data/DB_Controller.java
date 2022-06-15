@@ -7,10 +7,11 @@ import net.kravuar.moony.checks.Check;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class DB_Controller {
     private static final String SQL_SELECT_CATEGORIES = "select * from categories";
-    private static final String SQL_GET_CATEGORY_COLOR = "select 1 from categories where name = ?";
+    private static final String SQL_GET_CATEGORY_COLOR = "select * from categories where name = ?";
     private static final String SQL_INSERT_CATEGORY = "insert into categories (name,color) values (?,?)";
     private static final String SQL_REMOVE_CATEGORY = "delete from categories where name = ?";
     private static final String SQL_UPDATE_CATEGORIES_NAME = "update categories set name = ? where name = ?";
@@ -134,14 +135,18 @@ public class DB_Controller {
         check_upd_categories_remove.setInt(2, id);
         check_upd_categories_remove.executeUpdate();
     }
-//    public static void check_upd_add(Check check, int id) throws SQLException {
-//        check_upd_add.setDouble(1,check.getAmount());
-//        check_upd_add.setString(2,check.getDescription());
-//        check_upd_add.setDate(3,Date.valueOf(check.getDate()));
-//        check_upd_add.setBoolean(4,check.isIncome());
-//        check_upd_add.setString(5,check.getPrimaryCategory().getName());
-//        check_upd_add.setArray(6, check.getCategories().stream().map(Category::toString).collect(Collectors.toList())); // A kak
-//    }
+    public static void check_upd_add(Check check, int id) throws SQLException {
+        check_upd_add.setDouble(1,check.getAmount());
+        check_upd_add.setString(2,check.getDescription());
+        check_upd_add.setDate(3,Date.valueOf(check.getDate()));
+        check_upd_add.setBoolean(4,check.isIncome());
+        check_upd_add.setString(5,check.getPrimaryCategory().getName());
+        StringBuilder categories = new StringBuilder("'{");
+        check.getCategories().forEach(category -> categories.append("\"").append(category.getName()).append("\","));
+        categories.deleteCharAt(categories.length()-1);
+        categories.append("}'");
+        check_upd_add.setString(6, categories.toString());
+    }
     public static void check_upd_remove(int id) throws SQLException {
         check_upd_remove.setInt(1,id);
     }
@@ -159,9 +164,14 @@ public class DB_Controller {
     public static String getColor(String name) throws SQLException {
         categories_get_name.setString(1,name);
         ResultSet color = categories_get_name.executeQuery();
-        return color.getString("color");
+        if (color.next())
+            return color.getString("color");
+        else throw new RuntimeException();
     }
-//    public static void categories_upd_name(Category category, String newName) {}
+    public static void categories_upd_name(String newName, String name) throws SQLException {
+        categories_upd_name.setString(1, newName);
+        categories_upd_name.setString(2, name);
+    }
     public static void categories_upd_color(String color, String name) throws SQLException {
         categories_upd_color.setString(1 , color);
         categories_upd_color.setString(2, name);

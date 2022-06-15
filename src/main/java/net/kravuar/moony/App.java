@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.io.IOException;
 public class App extends Application {
 
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/postgres?searchpath=moony";
+    private static final String DB_URL = "jdbc:postgresql://localhost:5432/moony";
     private static final String DB_PASS = "appPass";
     private static final String DB_USERNAME = "postgres";
     public static final Connection connection;

@@ -63,6 +63,7 @@ public class CheckController implements Settable<Check>, Initializable {
     void updateDate() {
 
     }
+
     @FXML
     void changeDollar() throws SQLException {
         check.setIncome(!check.isIncome());
@@ -72,18 +73,20 @@ public class CheckController implements Settable<Check>, Initializable {
             dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Expence.png"));
         DB_Controller.check_upd_income(check.isIncome(), check.getId());
     }
+
     @FXML
     void addCategory() {
 
     }
+
     @FXML
     void removeCategory(ActionEvent event) throws SQLException {
-        categories.getItems().removeIf(category -> Objects.equals(category.getName(), ((MenuItem) event.getTarget()).getText()));
+        categories.getItems().removeIf(category -> Objects.equals(category.getName(), categories.getSelectionModel().getSelectedItem().getName()));
         DB_Controller.check_upd_categories_remove(((MenuItem) event.getTarget()).getText(), check.getId());
     }
 
     private void changeDescription() throws SQLException {
-        check.setDescription(description.toString());
+        check.setDescription(description.getText());
         DB_Controller.check_upd_descr(check.getDescription(), check.getId());
     }
 
