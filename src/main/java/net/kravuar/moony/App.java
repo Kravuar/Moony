@@ -34,7 +34,8 @@ public class App extends Application {
         mainController.changeScene("storage");
         stage.getIcons().add(new Image("file:src/main/resources/net/kravuar/moony/assets/Icon.png"));
         stage.setTitle("Moony");
-        stage.setScene(scene);stage.show();
+        stage.setScene(scene);
+        stage.show();
     }
 
     public static void main(String[] args) {

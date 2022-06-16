@@ -17,6 +17,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import static net.kravuar.moony.Util.createHelperStage;
+
 public class SettingsController implements Initializable {
     @FXML
     private ListView<Category> list;
@@ -30,8 +32,7 @@ public class SettingsController implements Initializable {
         Parent parent = loader.load();
         AddCategoryController controller = loader.getController();
         controller.setData(list,"");
-        Stage stage = new Stage(StageStyle.UNDECORATED);
-        stage.setScene(new Scene(parent));
+        Stage stage = createHelperStage(new Scene(parent));
         stage.show();
     }
 
@@ -42,8 +43,7 @@ public class SettingsController implements Initializable {
         AddCategoryController controller = loader.getController();
         controller.setData(list,list.getSelectionModel().getSelectedItem().getName());
         controller.setEditMode(true);
-        Stage stage = new Stage(StageStyle.UNDECORATED);
-        stage.setScene(new Scene(parent));
+        Stage stage = createHelperStage(new Scene(parent));
         stage.show();
     }
 

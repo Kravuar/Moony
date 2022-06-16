@@ -1,5 +1,9 @@
 package net.kravuar.moony.checks;
 
+import net.kravuar.moony.data.DB_Controller;
+
+import java.sql.SQLException;
+
 public class Category {
     private String name;
     private String color;
@@ -28,5 +32,9 @@ public class Category {
         return name;
     }
 
-
+    public static final Category placeholder;
+    static {
+        try { placeholder = new Category("Placeholder",DB_Controller.categoryGetColor(1)); }
+        catch (SQLException e) { throw new RuntimeException(e); }
+    }
 }

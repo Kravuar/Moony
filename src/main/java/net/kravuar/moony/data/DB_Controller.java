@@ -7,6 +7,7 @@ import net.kravuar.moony.checks.Check;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class DB_Controller {
     private static final String SQL_SELECT_CATEGORIES = "select * from categories";
@@ -22,13 +23,13 @@ public class DB_Controller {
     private static final String SQL_SELECT_CHECKS_ID = "select distinct id from checks";
     private static final String SQL_SELECT_LAST_CHECKS_ID = "select currval(pg_get_serial_sequence('checks','id'))";
     private static final String SQL_SELECT_CHEKCS = "select * from checks order by date desc";
-    private static final String SQL_INSERT_CHECK = "insert into checks (amount,description,date,income,primaryId,categories) values (?,?,?,?,?,?)";
+    private static final String SQL_INSERT_CHECK = "insert into checks (amount,description,date,income,primaryid,categories) values (?,?,?,?,?,?)";
     private static final String SQL_REMOVE_CHECK = "delete from checks where id = ?";
     private static final String SQL_UPDATE_CHECK_AMOUNT = "update checks set amount = ? where id = ?";
     private static final String SQL_UPDATE_CHECK_DESCRIPTION = "update checks set description = ? where id = ?";
     private static final String SQL_UPDATE_CHECK_DATE = "update checks set date = ? where id = ?";
     private static final String SQL_UPDATE_CHECK_INCOME = "update checks set income = ? where id = ?";
-    private static final String SQL_UPDATE_CHECK_PRIMARY = "update checks set primaryId = ? where id = ?";
+    private static final String SQL_UPDATE_CHECK_PRIMARY = "update checks set primaryid = ? where id = ?";
     private static final String SQL_UPDATE_CHECK_CATEGORIES_APPEND = "update checks set categories = array_append(categories, ?) where id = ?";
     private static final String SQL_UPDATE_CHECK_CATEGORIES_REMOVE = "update checks set categories = array_remove(categories, ?) where id = ?";
 
@@ -89,7 +90,7 @@ public class DB_Controller {
             for (Integer id : ids)
                 categories.add(new Category(categoryGetName(id), categoryGetColor(id)));
             result.add(new Check(categories,
-                    new Category(categoryGetName(checks.getInt("primaryId")), categoryGetColor(checks.getInt("primaryId"))),
+                    new Category(categoryGetName(checks.getInt("primaryid")), categoryGetColor(checks.getInt("primaryid"))),
                     checks.getDouble("amount"),
                     checks.getBoolean("income"),
                     checks.getDate("date").toLocalDate(),
@@ -156,12 +157,8 @@ public class DB_Controller {
         check_upd_add.setString(2, check.getDescription());
         check_upd_add.setDate(3, Date.valueOf(check.getDate()));
         check_upd_add.setBoolean(4, check.isIncome());
-        check_upd_add.setString(5, check.getPrimaryCategory().getName());
-        StringBuilder categories = new StringBuilder("'{");
-        check.getCategories().forEach(category -> categories.append("\"").append(category.getName()).append("\","));
-        categories.deleteCharAt(categories.length() - 1);
-        categories.append("}'");
-        check_upd_add.setString(6, categories.toString());
+        check_upd_add.setInt(5, 1);
+        check_upd_add.setArray(6, App.connection.createArrayOf("integer",new Integer[]{}));
         check_upd_add.executeUpdate();
     }
     public static void check_upd_remove(int id) throws SQLException {
@@ -176,6 +173,7 @@ public class DB_Controller {
         ArrayList<Category> result = new ArrayList<>();
         while (categories.next())
             result.add(new Category(categories.getString("name"), categories.getString("color")));
+        result.removeIf(category -> Objects.equals(category.getName(), "Placeholder"));
         return result;
     }
     public static String categoryGetName(int id) throws SQLException {
@@ -183,14 +181,28 @@ public class DB_Controller {
         ResultSet name = categories_get_name.executeQuery();
         if (name.next())
             return name.getString("name");
-        else throw new RuntimeException();
+        else {
+            categories_get_name.setInt(1,1);
+            name = categories_get_name.executeQuery();
+            if (name.next())
+                return name.getString("name");
+            else
+                throw new RuntimeException();
+        }
     }
     public static String categoryGetColor(int id) throws SQLException {
         categories_get_color.setInt(1, id);
         ResultSet color = categories_get_color.executeQuery();
         if (color.next())
             return color.getString("color");
-        else throw new RuntimeException();
+        else {
+            categories_get_name.setInt(1,1);
+            color = categories_get_name.executeQuery();
+            if (color.next())
+                return color.getString("color");
+            else
+                throw new RuntimeException();
+        }
     }
     public static int categoryGetId(String name) throws SQLException {
         categories_get_id.setString(1, name);

@@ -5,6 +5,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -70,6 +71,11 @@
                   <MaterialDesignIconView glyphName="FILE_FIND" />
                </graphic>
             </JFXButton>
+            <TextField fx:id="description" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Description">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </TextField>
          </children>
       </HBox>
    </top>

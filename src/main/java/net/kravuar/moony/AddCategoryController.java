@@ -22,7 +22,7 @@ public class AddCategoryController {
     private boolean isEditMode = false;
 
     @FXML
-    void add(ActionEvent event) throws SQLException {
+    void add() throws SQLException {
         String cname = name.getText();
         String cColor = color.getValue().toString();
         Category category = new Category(cname,cColor);
@@ -41,7 +41,7 @@ public class AddCategoryController {
             }
             isEditMode = false;
         }
-        ((Stage) ((Node)  event.getSource()).getScene().getWindow()).close();
+        ((Stage) list.getScene().getWindow()).close();
     }
 
     public void setData(ListView<Category> list, String cname) {

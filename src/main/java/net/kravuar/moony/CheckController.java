@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import net.kravuar.moony.checks.Category;
@@ -22,6 +23,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
+import static net.kravuar.moony.Util.createHelperStage;
 
 public class CheckController implements Settable<Check>, Initializable {
     @FXML
@@ -40,23 +43,22 @@ public class CheckController implements Settable<Check>, Initializable {
     private Check check;
 
     @Override
-    public void set(Check newCheck){
-        if (check == null || !check.equals(newCheck)){
-            check = newCheck;
-            amount.setText(newCheck.getAmount().toString());
-            date.setText(newCheck.getDate().toString());
-            description.setText(newCheck.getDescription());
-            if (newCheck.isIncome())
-                dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Income.png"));
-            else
-                dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Expence.png"));
-            primaryCategory.setText(newCheck.getPrimaryCategory().toString());
-            categories.setCellFactory(new CellFactory<Category,CategoryController>("category.fxml"));
-            for (Category category: newCheck.getCategories()) {
-                ObservableList<Category> list = categories.getItems();
-                if (!list.contains(category))
-                    list.add(category);
-            }
+    public void set(Check newCheck) {
+        check = newCheck;
+        amount.setText(newCheck.getAmount().toString());
+        date.setText(newCheck.getDate().toString());
+        description.setText(newCheck.getDescription());
+        if (newCheck.isIncome())
+            dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Income.png"));
+        else
+            dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Expence.png"));
+        primaryCategory.setText(newCheck.getPrimaryCategory().toString());
+        categories.setCellFactory(new CellFactory<Category, CategoryController>("category.fxml"));
+        categories.getItems().clear();
+        for (Category category : newCheck.getCategories()) {
+            ObservableList<Category> list = categories.getItems();
+            if (!list.contains(category))
+                list.add(category);
         }
     }
 
@@ -65,26 +67,30 @@ public class CheckController implements Settable<Check>, Initializable {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("updateAmount.fxml"));
         Parent parent = loader.load();
         AmountController controller = loader.getController();
-        controller.setData(amount, check.getId());
-        Stage stage = new Stage(StageStyle.UNDECORATED);
-        stage.setScene(new Scene(parent));
+        controller.setData(amount, check);
+        Stage stage = createHelperStage(new Scene(parent));
         stage.show();
     }
+
     @FXML
     void updateDate() throws IOException {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("updateDate.fxml"));
         Parent parent = loader.load();
         DateController controller = loader.getController();
-        controller.setData(date, check.getId());
-        Stage stage = new Stage(StageStyle.UNDECORATED);
-        stage.setScene(new Scene(parent));
+        controller.setData(date, check);
+        Stage stage = createHelperStage(new Scene(parent));
         stage.show();
     }
+
     @FXML
     void setAsPrimary() throws SQLException {
-        primaryCategory.setText(categories.getSelectionModel().getSelectedItem().getName());
-        DB_Controller.check_upd_primary(DB_Controller.categoryGetId(primaryCategory.getText()), check.getId());
+        Category newPrimary = categories.getSelectionModel().getSelectedItem();
+        if (!newPrimary.equals(Category.placeholder)){
+            primaryCategory.setText(newPrimary.getName());
+            DB_Controller.check_upd_primary(DB_Controller.categoryGetId(primaryCategory.getText()), check.getId());
+        }
     }
+
     @FXML
     void changeDollar() throws SQLException {
         check.setIncome(!check.isIncome());
@@ -96,8 +102,13 @@ public class CheckController implements Settable<Check>, Initializable {
     }
 
     @FXML
-    void addCategory() {
-
+    void addCategory() throws IOException {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("addCheckCategory.fxml"));
+        Parent parent = loader.load();
+        AddCheckCategoryController controller = loader.getController();
+        controller.setData(check, categories);
+        Stage stage = createHelperStage(new Scene(parent));
+        stage.show();
     }
 
     @FXML
@@ -116,8 +127,11 @@ public class CheckController implements Settable<Check>, Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         description.focusedProperty().addListener((obs, oldp, newp) -> {
             if (!newp) {
-                try { changeDescription();}
-                catch (SQLException e) { throw new RuntimeException(e); }
+                try {
+                    changeDescription();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
