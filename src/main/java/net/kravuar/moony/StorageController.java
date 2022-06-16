@@ -37,10 +37,8 @@ public class StorageController implements Initializable {
 
     @FXML
     void findCheck() {
-        String toFind = description.getText();
-        // filter data with that description
-        // set it to list
-
+        String toFind = description.getText().toLowerCase();
+        list.setItems(data.filtered(check -> check.getDescription().toLowerCase().contains(toFind)));
     }
 
     @FXML
