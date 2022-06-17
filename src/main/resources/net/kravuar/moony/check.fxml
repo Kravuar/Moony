@@ -9,7 +9,6 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -29,16 +28,16 @@
       <ListView fx:id="categories" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@styles/check.css" BorderPane.alignment="CENTER">
          <contextMenu>
             <ContextMenu>
-              <items>
-                <MenuItem mnemonicParsing="false" onAction="#addCategory" text="Add" />
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#addCategory" text="Add" />
                   <MenuItem mnemonicParsing="false" onAction="#removeCategory" text="Remove" />
                   <MenuItem mnemonicParsing="false" onAction="#setAsPrimary" text="Set as Primary" />
-              </items>
+               </items>
             </ContextMenu>
          </contextMenu></ListView>
    </left>
    <right>
-      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="box" stylesheets="@styles/check.css" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="box" stylesheets="@styles/check.css" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" stylesheets="@styles/check.css" text="Amount">
                <font>
@@ -55,17 +54,17 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <DatePicker fx:id="date" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="text" stylesheets="@styles/check.css" />
+            <DatePicker fx:id="date" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" stylesheets="@styles/check.css">
+               <VBox.margin>
+                  <Insets bottom="50.0" />
+               </VBox.margin>
+            </DatePicker>
             <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" stylesheets="@styles/check.css" text="Direction">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-               <children>
-                  <ImageView fx:id="dollar" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#changeDollar" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-               </children>
-            </AnchorPane>
+            <ImageView fx:id="dollar" fitHeight="150.0" nodeOrientation="INHERIT" onMouseClicked="#changeDollar" pickOnBounds="true" preserveRatio="true" />
          </children>
       </VBox>
    </right>

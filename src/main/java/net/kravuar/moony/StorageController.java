@@ -12,7 +12,6 @@ import net.kravuar.moony.data.Model;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
 
 public class StorageController implements Initializable {
@@ -31,7 +30,7 @@ public class StorageController implements Initializable {
     @FXML
     void findCheck() {
         String toFind = description.getText().toLowerCase();
-        list.setItems(App.data.filtered(check -> check.getDescription().toLowerCase().contains(toFind)));
+        list.setItems(App.data.filtered(check -> check.getDescription().toString().toLowerCase().contains(toFind)));
     }
 
     @FXML
@@ -47,6 +46,5 @@ public class StorageController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         list.setCellFactory(new CellFactory<Check,CheckController>("check.fxml"));
         list.setItems(Model.checks);
-        list.itemsProperty().bind(Model.checks);
     }
 }

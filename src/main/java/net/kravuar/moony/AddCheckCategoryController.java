@@ -10,6 +10,7 @@ import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.CellFactory;
 import net.kravuar.moony.data.DB_Controller;
+import net.kravuar.moony.data.Model;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -20,20 +21,17 @@ public class AddCheckCategoryController implements Initializable {
     private ListView<Category> list;
 
     Check check;
-    private ListView<Category> categories;
 
     @FXML
     void addCategory() throws SQLException {
         Category newCategory = list.getSelectionModel().getSelectedItem();
         check.getCategories().add(newCategory);
-        categories.getItems().add(newCategory);
-        DB_Controller.check_upd_categories_append(DB_Controller.categoryGetId(newCategory.getName()),check.getId());
+        Model.updateCheck(check,Check.Field.CATEGORIES);
         ((Stage) list.getScene().getWindow()).close();
     }
 
-    public void setData(Check check, ListView<Category> categories) {
+    public void setData(Check check) {
         this.check = check;
-        this.categories = categories;
     }
 
     @Override

@@ -137,10 +137,10 @@ public class DB_Controller {
     }
 
     public static void check_upd_add(Check check) throws SQLException {
-        check_upd_add.setDouble(1, check.getAmount());
-        check_upd_add.setString(2, check.getDescription());
-        check_upd_add.setDate(3, Date.valueOf(check.getDate()));
-        check_upd_add.setBoolean(4, check.isIncome());
+        check_upd_add.setDouble(1, check.getAmount().doubleValue());
+        check_upd_add.setString(2, check.getDescription().toString());
+        check_upd_add.setDate(3, Date.valueOf(check.getDate().getValue()));
+        check_upd_add.setBoolean(4, check.isIncome().getValue());
         check_upd_add.setInt(5, categoryGetId(check.getPrimaryCategory().getName()));
         Integer[] ids = check.getCategories().stream().map(category -> {
             try {return categoryGetId(category.getName());}
@@ -150,7 +150,7 @@ public class DB_Controller {
         check_upd_add.executeUpdate();
     }
     public static void check_upd_remove(Check check) throws SQLException {
-        check_upd_remove.setInt(1, check.getId());
+        check_upd_remove.setInt(1, check.getId().getValue());
         check_upd_remove.executeUpdate();
     }
 

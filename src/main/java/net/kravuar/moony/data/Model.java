@@ -32,12 +32,12 @@ public class Model {
     public static void updateCheck(Check check, String field) throws SQLException {
         int id = check.getId().getValue();
         switch (field) {
-            case Check.Field.AMOUNT -> DB_Controller.check_upd_amount(check.getAmount().get(),id);
-            case Check.Field.DESCRIPTION -> DB_Controller.check_upd_descr(check.getDescription().get(),id);
-            case Check.Field.INCOME -> DB_Controller.check_upd_income(check.isIncome().get(),id);
+            case Check.Field.AMOUNT -> DB_Controller.check_upd_amount(check.getAmount().getValue(),id);
+            case Check.Field.DESCRIPTION -> DB_Controller.check_upd_descr(check.getDescription().getValue(),id);
+            case Check.Field.INCOME -> DB_Controller.check_upd_income(check.isIncome().getValue(),id);
             case Check.Field.DATE -> DB_Controller.check_upd_date(check.getDate().getValue(),id);
             case Check.Field.PRIMARY -> DB_Controller.check_upd_primary(check.getPrimaryCategory().getValue(),id);
-            case Check.Field.CATEGORIES -> DB_Controller.check_upd_categories(check.getCategories().get(),id);
+            case Check.Field.CATEGORIES -> DB_Controller.check_upd_categories(check.getCategories().getValue(),id);
             default -> throw new RuntimeException("No such field");
         }
     }
