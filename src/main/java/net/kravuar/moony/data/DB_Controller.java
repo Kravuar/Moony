@@ -1,5 +1,7 @@
 package net.kravuar.moony.data;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import net.kravuar.moony.App;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
@@ -7,6 +9,7 @@ import net.kravuar.moony.checks.Check;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class DB_Controller {
@@ -14,24 +17,25 @@ public class DB_Controller {
     private static final String SQL_GET_CATEGORY_COLOR = "select color from categories where id = ?";
     private static final String SQL_GET_CATEGORY_NAME = "select name from categories where id = ?";
     private static final String SQL_GET_CATEGORY_ID = "select id from categories where name = ?";
-    private static final String SQL_INSERT_CATEGORY = "insert into categories (name,color) values (?,?)";
-    private static final String SQL_REMOVE_CATEGORY = "delete from categories where id = ?";
     private static final String SQL_UPDATE_CATEGORIES_NAME = "update categories set name = ? where id = ?";
     private static final String SQL_UPDATE_CATEGORIES_COLOR = "update categories set color = ? where id = ?";
 
+    private static final String SQL_INSERT_CATEGORY = "insert into categories (name,color) values (?,?)";
+    private static final String SQL_REMOVE_CATEGORY = "delete from categories where id = ?";
 
-    private static final String SQL_SELECT_CHECKS_ID = "select distinct id from checks";
-    private static final String SQL_SELECT_LAST_CHECKS_ID = "select currval(pg_get_serial_sequence('checks','id'))";
+
     private static final String SQL_SELECT_CHEKCS = "select * from checks order by date desc";
-    private static final String SQL_INSERT_CHECK = "insert into checks (amount,description,date,income,primaryid,categories) values (?,?,?,?,?,?)";
-    private static final String SQL_REMOVE_CHECK = "delete from checks where id = ?";
     private static final String SQL_UPDATE_CHECK_AMOUNT = "update checks set amount = ? where id = ?";
     private static final String SQL_UPDATE_CHECK_DESCRIPTION = "update checks set description = ? where id = ?";
     private static final String SQL_UPDATE_CHECK_DATE = "update checks set date = ? where id = ?";
     private static final String SQL_UPDATE_CHECK_INCOME = "update checks set income = ? where id = ?";
     private static final String SQL_UPDATE_CHECK_PRIMARY = "update checks set primaryid = ? where id = ?";
-    private static final String SQL_UPDATE_CHECK_CATEGORIES_APPEND = "update checks set categories = array_append(categories, ?) where id = ?";
-    private static final String SQL_UPDATE_CHECK_CATEGORIES_REMOVE = "update checks set categories = array_remove(categories, ?) where id = ?";
+    private static final String SQL_UPDATE_CHECK_CATEGORIES = "update checks set categories = ? where id = ?";
+
+    private static final String SQL_INSERT_CHECK = "insert into checks (amount,description,date,income,primaryid,categories) values (?,?,?,?,?,?)";
+    private static final String SQL_REMOVE_CHECK = "delete from checks where id = ?";
+
+
 
     private static final PreparedStatement categories_get_name;
     private static final PreparedStatement categories_get_color;
@@ -47,10 +51,9 @@ public class DB_Controller {
     private static final PreparedStatement check_upd_date;
     private static final PreparedStatement check_upd_income;
     private static final PreparedStatement check_upd_primary;
-    private static final PreparedStatement check_upd_categories_append;
-    private static final PreparedStatement check_upd_categories_remove;
     private static final PreparedStatement check_upd_add;
     private static final PreparedStatement check_upd_remove;
+    private static final PreparedStatement check_upd_categories;
 
 
     static {
@@ -61,11 +64,9 @@ public class DB_Controller {
             check_upd_date = App.connection.prepareStatement(SQL_UPDATE_CHECK_DATE);
             check_upd_income = App.connection.prepareStatement(SQL_UPDATE_CHECK_INCOME);
             check_upd_primary = App.connection.prepareStatement(SQL_UPDATE_CHECK_PRIMARY);
-            check_upd_categories_append = App.connection.prepareStatement(SQL_UPDATE_CHECK_CATEGORIES_APPEND);
-            check_upd_categories_remove = App.connection.prepareStatement(SQL_UPDATE_CHECK_CATEGORIES_REMOVE);
             check_upd_add = App.connection.prepareStatement(SQL_INSERT_CHECK);
             check_upd_remove = App.connection.prepareStatement(SQL_REMOVE_CHECK);
-
+            check_upd_categories = App.connection.prepareStatement(SQL_UPDATE_CHECK_CATEGORIES);
 
             categories_get_color = App.connection.prepareStatement(SQL_GET_CATEGORY_COLOR);
             categories_get_name = App.connection.prepareStatement(SQL_GET_CATEGORY_NAME);
@@ -89,7 +90,7 @@ public class DB_Controller {
             Integer[] ids = (Integer[]) checks.getArray("categories").getArray();
             for (Integer id : ids)
                 categories.add(new Category(categoryGetName(id), categoryGetColor(id)));
-            result.add(new Check(categories,
+            result.add(new Check(FXCollections.observableArrayList(categories),
                     new Category(categoryGetName(checks.getInt("primaryid")), categoryGetColor(checks.getInt("primaryid"))),
                     checks.getDouble("amount"),
                     checks.getBoolean("income"),
@@ -97,23 +98,6 @@ public class DB_Controller {
                     checks.getString("description"),
                     checks.getInt("id")));
         }
-        return result;
-    }
-    public static ArrayList<Integer> getIds() throws SQLException {
-        Statement statement = App.connection.createStatement();
-        ResultSet checks = statement.executeQuery(SQL_SELECT_CHECKS_ID);
-        ArrayList<Integer> result = new ArrayList<>();
-        while (checks.next())
-            result.add(checks.getInt("id"));
-        return result;
-    }
-    public static Integer getLastId() throws SQLException {
-        Statement statement = App.connection.createStatement();
-        ResultSet checks = statement.executeQuery(SQL_SELECT_LAST_CHECKS_ID);
-        int result;
-        if (checks.next())
-            result = checks.getInt("currval");
-        else throw new RuntimeException();
         return result;
     }
     public static void check_upd_amount(double amount, int id) throws SQLException {
@@ -136,33 +120,37 @@ public class DB_Controller {
         check_upd_income.setInt(2, id);
         check_upd_income.executeUpdate();
     }
-    public static void check_upd_primary(int primaryid, int id) throws SQLException {
-        check_upd_primary.setInt(1, primaryid);
+    public static void check_upd_primary(Category category, int id) throws SQLException {
+        check_upd_primary.setInt(1, categoryGetId(category.getName()));
         check_upd_primary.setInt(2, id);
         check_upd_primary.executeUpdate();
     }
+    public static void check_upd_categories(List<Category> categories, int id) throws SQLException {
+        Integer[] ids = categories.stream().map(category -> {
+            try {return categoryGetId(category.getName());}
+            catch (SQLException e) {throw new RuntimeException(e);}
+        }).toArray(Integer[]::new);
 
-    public static void check_upd_categories_append(int newId, int id) throws SQLException {
-        check_upd_categories_append.setInt(1, newId);
-        check_upd_categories_append.setInt(2, id);
-        check_upd_categories_append.executeUpdate();
+        check_upd_categories.setArray(1, App.connection.createArrayOf("integer", ids));
+        check_upd_categories.setInt(2,id);
+        check_upd_categories.executeUpdate();
     }
-    public static void check_upd_categories_remove(int removeId, int id) throws SQLException {
-        check_upd_categories_remove.setInt(1, removeId);
-        check_upd_categories_remove.setInt(2, id);
-        check_upd_categories_remove.executeUpdate();
-    }
+
     public static void check_upd_add(Check check) throws SQLException {
         check_upd_add.setDouble(1, check.getAmount());
         check_upd_add.setString(2, check.getDescription());
         check_upd_add.setDate(3, Date.valueOf(check.getDate()));
         check_upd_add.setBoolean(4, check.isIncome());
-        check_upd_add.setInt(5, 1);
-        check_upd_add.setArray(6, App.connection.createArrayOf("integer",new Integer[]{}));
+        check_upd_add.setInt(5, categoryGetId(check.getPrimaryCategory().getName()));
+        Integer[] ids = check.getCategories().stream().map(category -> {
+            try {return categoryGetId(category.getName());}
+            catch (SQLException e) {throw new RuntimeException(e);}
+        }).toArray(Integer[]::new);
+        check_upd_add.setArray(6, App.connection.createArrayOf("integer", ids));
         check_upd_add.executeUpdate();
     }
-    public static void check_upd_remove(int id) throws SQLException {
-        check_upd_remove.setInt(1, id);
+    public static void check_upd_remove(Check check) throws SQLException {
+        check_upd_remove.setInt(1, check.getId());
         check_upd_remove.executeUpdate();
     }
 
@@ -221,13 +209,14 @@ public class DB_Controller {
         categories_upd_color.setInt(2, id);
         categories_upd_color.executeUpdate();
     }
+
     public static void categories_upd_add(Category category) throws SQLException {
         categories_upd_add.setString(1, category.getName());
         categories_upd_add.setString(2, category.getColor());
         categories_upd_add.executeUpdate();
     }
-    public static void categories_upd_remove(int id) throws SQLException {
-        categories_upd_remove.setInt(1, id);
+    public static void categories_upd_remove(Category category) throws SQLException {
+        categories_upd_remove.setInt(1, categoryGetId(category.getName()));
         categories_upd_remove.executeUpdate();
     }
 }

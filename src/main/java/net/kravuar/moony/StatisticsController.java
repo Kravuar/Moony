@@ -23,4 +23,8 @@ public class StatisticsController {
 
     }
 
+    @FXML
+    void addCategory(ActionEvent event) {
+
+    }
 }

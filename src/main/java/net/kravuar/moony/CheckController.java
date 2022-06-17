@@ -17,6 +17,7 @@ import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.CellFactory;
 import net.kravuar.moony.customList.Settable;
 import net.kravuar.moony.data.DB_Controller;
+import net.kravuar.moony.data.Model;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,9 +29,9 @@ import static net.kravuar.moony.Util.createHelperStage;
 
 public class CheckController implements Settable<Check>, Initializable {
     @FXML
-    private Label amount;
+    private TextField amount;
     @FXML
-    private Label date;
+    private TextField date;
     @FXML
     private TextArea description;
     @FXML
@@ -44,21 +45,28 @@ public class CheckController implements Settable<Check>, Initializable {
 
     @Override
     public void set(Check newCheck) {
-        check = newCheck;
-        amount.setText(newCheck.getAmount().toString());
-        date.setText(newCheck.getDate().toString());
-        description.setText(newCheck.getDescription());
-        if (newCheck.isIncome())
-            dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Income.png"));
-        else
-            dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Expence.png"));
-        primaryCategory.setText(newCheck.getPrimaryCategory().toString());
-        categories.setCellFactory(new CellFactory<Category, CategoryController>("category.fxml"));
-        categories.getItems().clear();
-        for (Category category : newCheck.getCategories()) {
-            ObservableList<Category> list = categories.getItems();
-            if (!list.contains(category))
-                list.add(category);
+        if (check != newCheck){
+            check = newCheck;
+            amount.textProperty().bindBidirectional(newCheck.getAmount());
+
+
+
+
+            amount.setText(newCheck.getAmount().toString());
+            date.setText(newCheck.getDate().toString());
+            description.textProperty().bindBidirectional(newCheck.getDescription());
+            if (newCheck.isIncome().getValue())
+                dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Income.png"));
+            else
+                dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Expence.png"));
+            primaryCategory.setText(newCheck.getPrimaryCategory().toString());
+            categories.setCellFactory(new CellFactory<Category, CategoryController>("category.fxml"));
+            categories.getItems().clear();
+            for (Category category : newCheck.getCategories()) {
+                ObservableList<Category> list = categories.getItems();
+                if (!list.contains(category))
+                    list.add(category);
+            }
         }
     }
 
@@ -87,7 +95,7 @@ public class CheckController implements Settable<Check>, Initializable {
         Category newPrimary = categories.getSelectionModel().getSelectedItem();
         if (!newPrimary.equals(Category.placeholder)){
             primaryCategory.setText(newPrimary.getName());
-            DB_Controller.check_upd_primary(DB_Controller.categoryGetId(primaryCategory.getText()), check.getId());
+            Model.updateCheck(check, Check.Field.PRIMARY);
         }
     }
 
@@ -115,7 +123,7 @@ public class CheckController implements Settable<Check>, Initializable {
     void removeCategory() throws SQLException {
         String name = categories.getSelectionModel().getSelectedItem().getName();
         categories.getItems().removeIf(category -> Objects.equals(category.getName(), name));
-        DB_Controller.check_upd_categories_remove(DB_Controller.categoryGetId(name), check.getId());
+        Model.updateCheck(check, Check.Field.CATEGORIES);
     }
 
     private void changeDescription() throws SQLException {
@@ -134,5 +142,6 @@ public class CheckController implements Settable<Check>, Initializable {
                 }
             }
         });
+        Model.categories.addListener(change -> change.get);
     }
 }
