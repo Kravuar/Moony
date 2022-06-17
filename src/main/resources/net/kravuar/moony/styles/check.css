@@ -1,12 +1,9 @@
-.category.name {
-    -fx-background-color: #d3c8e0;
-    -fx-font-size: 18;
+.category {
+    -fx-background-color:  #DCC4E2;
+    -fx-border-color: #777777;
+    -fx-border-width: 2px 2px 0px 2px;
+    -fx-font-size: 20;
     -fx-text-fill: #9c6cc9;
-}
-.category.pane {
-    -fx-background-color: #d3c8e0;
-    -fx-border-color: #927bb4;
-    -fx-border-width: 3px 0px 3px 0px;
 }
 
 .myLabel {
@@ -21,7 +18,7 @@
 .text {
     -fx-background-color: #e4d9f1;
     -fx-font-size: 16;
-    -fx-text-fill: #b83dbd;
+    -fx-text-fill: #9c6cc9;
     -fx-border-color: #927bb4;
     -fx-border-width: 0px 0px 2px 0px;
     -fx-padding: 5px 5px 0px 5px;

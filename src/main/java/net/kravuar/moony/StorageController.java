@@ -4,10 +4,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.CellFactory;
-import net.kravuar.moony.data.DB_Controller;
 import net.kravuar.moony.data.Model;
 
 import java.net.URL;
@@ -36,9 +34,11 @@ public class StorageController implements Initializable {
     @FXML
     void removeCheck() throws SQLException {
         Check delCheck = list.getSelectionModel().getSelectedItem();
-        DB_Controller.check_upd_remove(delCheck);
-        list.getItems().removeIf(check -> check.getId() == delCheck.getId());
-        App.data.removeIf(check -> check.getId() == delCheck.getId());
+        if (delCheck != null) {
+            Model.removeCheck(delCheck);
+            list.getItems().removeIf(check -> check.getId() == delCheck.getId());
+            App.data.removeIf(check -> check.getId() == delCheck.getId());
+        }
     }
 
 

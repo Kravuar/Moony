@@ -32,20 +32,22 @@ public class SettingsController implements Initializable {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("addCategory.fxml"));
         Parent parent = loader.load();
         AddCategoryController controller = loader.getController();
-        controller.setData(list,"");
+        controller.setData(list,"",false);
         Stage stage = createHelperStage(new Scene(parent));
         stage.show();
     }
 
     @FXML
     void changeCategory() throws IOException {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("addCategory.fxml"));
-        Parent parent = loader.load();
-        AddCategoryController controller = loader.getController();
-        controller.setData(list,list.getSelectionModel().getSelectedItem().getName());
-        controller.setEditMode(true);
-        Stage stage = createHelperStage(new Scene(parent));
-        stage.show();
+        Category selected = list.getSelectionModel().getSelectedItem();
+        if (selected != null){
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("addCategory.fxml"));
+            Parent parent = loader.load();
+            AddCategoryController controller = loader.getController();
+            controller.setData(list, selected.getName().getValue(),true);
+            Stage stage = createHelperStage(new Scene(parent));
+            stage.show();
+        }
     }
 
     @FXML

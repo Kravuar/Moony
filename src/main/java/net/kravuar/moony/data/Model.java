@@ -3,30 +3,30 @@ package net.kravuar.moony.data;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.util.Callback;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 
 import java.sql.SQLException;
 
 public class Model {
-    public static final ObservableList<Check> checks = FXCollections.observableArrayList(new Callback<Check, Observable[]>() {
-        @Override
-        public Observable[] call(Check check) {
-            return new Observable[]{
-                    check.getAmount(),
-                    check.getDescription(),
-                    check.isIncome(),
-                    check.getDate(),
-                    check.getPrimaryCategory(),
-                    check.getCategories(),
-                    check.getId()
-            };
-        }
+    public static final ObservableList<Check> checks = FXCollections.observableArrayList(check -> new Observable[]{
+            check.getAmount(),
+            check.getDescription(),
+            check.isIncome(),
+            check.getDate(),
+            check.getPrimaryCategory(),
+            check.getCategories(),
+            check.getId()
     });
-    static { try { checks.addAll(DB_Controller.loadChecks()); } catch (SQLException e) { throw new RuntimeException(e); } }
-    public static final ObservableList<Category> categories = FXCollections.observableArrayList();
-    static { try { categories.addAll(DB_Controller.loadCategories()); } catch (SQLException e) { throw new RuntimeException(e); } }
+    public static final ObservableList<Category> categories = FXCollections.observableArrayList(category -> new Observable[]{
+            category.getColor(),
+            category.getName()
+    });
+
+    static {
+        try { categories.addAll(DB_Controller.loadCategories()); } catch (SQLException e) { throw new RuntimeException(e); }
+        try { checks.addAll(DB_Controller.loadChecks()); } catch (SQLException e) { throw new RuntimeException(e); }
+    }
 
 
     public static void updateCheck(Check check, String field) throws SQLException {
@@ -54,9 +54,9 @@ public class Model {
     public static void updateCategory(Category category, String field) throws SQLException {
         switch (field) {
             case Category.Field.NAME -> {
-                DB_Controller.categories_upd_name(category.getName(),DB_Controller.categoryGetId(category.getName()));
+                DB_Controller.categories_upd_name(category.getName().getValue(),DB_Controller.categoryGetId(category.getName().getValue()));
             }
-            case Category.Field.COLOR -> DB_Controller.categories_upd_color(category.getColor(),DB_Controller.categoryGetId(category.getName()));
+            case Category.Field.COLOR -> DB_Controller.categories_upd_color(category.getColor().getValue(),DB_Controller.categoryGetId(category.getName().getValue()));
             default -> throw new RuntimeException("No such field");
         }
     }
@@ -65,7 +65,7 @@ public class Model {
         DB_Controller.categories_upd_add(category);
     }
     public static void removeCategory(Category category) throws SQLException {
-        categories.add(category);
+        categories.remove(category);
         DB_Controller.categories_upd_remove(category);
     }
 }

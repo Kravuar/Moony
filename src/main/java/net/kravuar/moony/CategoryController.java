@@ -1,6 +1,7 @@
 package net.kravuar.moony;
 
 
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
@@ -16,7 +17,7 @@ public class CategoryController implements Settable<Category> {
 
     @Override
     public void set(Category category){
-        name.setText(category.getName());
-        rect.setFill(Color.valueOf(category.getColor()));
+        name.textProperty().bind(category.getName());
+        rect.fillProperty().bind(Bindings.createObjectBinding(() -> Color.valueOf(category.getColor().getValue()), category.getColor()));
     }
 }

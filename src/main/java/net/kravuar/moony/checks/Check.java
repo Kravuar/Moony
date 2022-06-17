@@ -1,6 +1,7 @@
 package net.kravuar.moony.checks;
 
 import javafx.beans.property.*;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -27,8 +28,8 @@ public class Check {
     private final StringProperty description;
     private final IntegerProperty id;
 
-    public Check(ObservableList<Category> categories, Category primaryCategory, double amount, boolean income, LocalDate date, String description, int id) {
-        this.categories = new SimpleListProperty<>(categories);
+    public Check(List<Category> categories, Category primaryCategory, double amount, boolean income, LocalDate date, String description, int id) {
+        this.categories = new SimpleListProperty<>(FXCollections.observableArrayList(categories));
         this.primaryCategory = new SimpleObjectProperty<>(primaryCategory);
         this.amount = new SimpleDoubleProperty(amount);
         this.income = new SimpleBooleanProperty(income);

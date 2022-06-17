@@ -8,7 +8,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import net.kravuar.moony.checks.Category;
-import net.kravuar.moony.data.DB_Controller;
+import net.kravuar.moony.data.Model;
 
 import java.sql.SQLException;
 
@@ -18,35 +18,34 @@ public class AddCategoryController {
     @FXML
     private TextField name;
     @FXML
+
     private ListView<Category> list;
     private boolean isEditMode = false;
 
     @FXML
-    void add() throws SQLException {
+    void add(ActionEvent event) throws SQLException {
         String cname = name.getText();
         String cColor = color.getValue().toString();
-        Category category = new Category(cname,cColor);
+        Category category;
+
         if (!isEditMode){
-            DB_Controller.categories_upd_add(category);
-            list.getItems().add(category);
+            category = new Category(cname,cColor);
+            Model.addCategory(category);
         }
         else {
-            Category toChange = list.getSelectionModel().getSelectedItem();
-            if (toChange != null){
-                DB_Controller.categories_upd_color(cColor, DB_Controller.categoryGetId(toChange.getName()));
-                DB_Controller.categories_upd_name(cname, DB_Controller.categoryGetId(toChange.getName()));
-                toChange.setName(cname);
-                toChange.setColor(cColor);
-                list.getSelectionModel().clearSelection();
-            }
-            isEditMode = false;
+            category = list.getSelectionModel().getSelectedItem();
+            category.setName(cname);
+            category.setColor(cColor);
+            Model.updateCategory(category,Category.Field.NAME);
+            Model.updateCategory(category,Category.Field.COLOR);
+            list.getSelectionModel().clearSelection();
         }
-        ((Stage) list.getScene().getWindow()).close();
+        ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
     }
 
-    public void setData(ListView<Category> list, String cname) {
+    public void setData(ListView<Category> list, String selected, boolean editMode) {
         this.list = list;
-        name.setText(cname);
+        name.setText(selected);
+        isEditMode = editMode;
     }
-    public void setEditMode(boolean condition) {isEditMode = condition;}
 }

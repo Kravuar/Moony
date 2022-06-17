@@ -11,21 +11,25 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="600.0" style="-fx-background-color: #F1E7F3;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.kravuar.moony.CheckController">
    <top>
-      <Label fx:id="primaryCategory" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #DCC4E2;" textFill="WHITE" BorderPane.alignment="CENTER">
+      <Label fx:id="primaryCategory" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="category" stylesheets="@styles/check.css" textFill="WHITE" BorderPane.alignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
          <padding>
             <Insets left="5.0" right="5.0" />
          </padding>
+         <graphic>
+            <Rectangle fx:id="primeRect" arcHeight="5.0" arcWidth="5.0" height="15.0" stroke="BLACK" strokeType="INSIDE" width="15.0" />
+         </graphic>
       </Label>
    </top>
    <left>
-      <ListView fx:id="categories" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@styles/check.css" BorderPane.alignment="CENTER">
+      <ListView fx:id="categories" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myList" stylesheets="@styles/check.css" BorderPane.alignment="CENTER">
          <contextMenu>
             <ContextMenu>
                <items>
@@ -44,10 +48,13 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="amount" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="text" stylesheets="@styles/check.css">
+            <TextField fx:id="amount" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #FFF;" styleClass="text" stylesheets="@styles/check.css">
                <VBox.margin>
                   <Insets bottom="50.0" />
                </VBox.margin>
+               <font>
+                  <Font size="18.0" />
+               </font>
             </TextField>
             <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" stylesheets="@styles/check.css" text="Date">
                <font>
@@ -69,15 +76,17 @@
       </VBox>
    </right>
    <center>
-      <VBox prefHeight="409.0" prefWidth="148.0" styleClass="box" stylesheets="@styles/check.css" BorderPane.alignment="CENTER">
-         <children>
-            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" stylesheets="@styles/check.css" text="Description">
+      <BorderPane BorderPane.alignment="CENTER">
+         <top>
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" stylesheets="@styles/check.css" text="Description" BorderPane.alignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextArea fx:id="description" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="text" stylesheets="@styles/check.css" />
-         </children>
-      </VBox>
+         </top>
+         <center>
+            <TextArea fx:id="description" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="text" stylesheets="@styles/check.css" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
    </center>
 </BorderPane>

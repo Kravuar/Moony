@@ -1,7 +1,5 @@
 package net.kravuar.moony.data;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import net.kravuar.moony.App;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
@@ -9,6 +7,7 @@ import net.kravuar.moony.checks.Check;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -86,12 +85,24 @@ public class DB_Controller {
         ResultSet checks = statement.executeQuery(SQL_SELECT_CHEKCS);
         ArrayList<Check> result = new ArrayList<>();
         while (checks.next()) {
+            Array array = checks.getArray("categories");
             ArrayList<Category> categories = new ArrayList<>();
-            Integer[] ids = (Integer[]) checks.getArray("categories").getArray();
-            for (Integer id : ids)
-                categories.add(new Category(categoryGetName(id), categoryGetColor(id)));
-            result.add(new Check(FXCollections.observableArrayList(categories),
-                    new Category(categoryGetName(checks.getInt("primaryid")), categoryGetColor(checks.getInt("primaryid"))),
+
+            if (array != null) {
+                Integer[] ids = (Integer[]) array.getArray();
+                categories.addAll(
+                        Model.categories.stream().filter(category -> Arrays.stream(ids).anyMatch(id -> {
+                            try { return id == categoryGetId(category.getName().getValue()); }
+                            catch (SQLException e) { throw new RuntimeException(e); }
+                        })).toList());
+            }
+
+            int primeId = checks.getInt("primaryid");
+            Category prime = new Category(categoryGetName(primeId),categoryGetColor(primeId));
+            int primeIndex = Model.categories.indexOf(prime);
+
+            result.add(new Check(categories,
+                    Model.categories.get(primeIndex),
                     checks.getDouble("amount"),
                     checks.getBoolean("income"),
                     checks.getDate("date").toLocalDate(),
@@ -121,13 +132,13 @@ public class DB_Controller {
         check_upd_income.executeUpdate();
     }
     public static void check_upd_primary(Category category, int id) throws SQLException {
-        check_upd_primary.setInt(1, categoryGetId(category.getName()));
+        check_upd_primary.setInt(1, categoryGetId(category.getName().getValue()));
         check_upd_primary.setInt(2, id);
         check_upd_primary.executeUpdate();
     }
     public static void check_upd_categories(List<Category> categories, int id) throws SQLException {
         Integer[] ids = categories.stream().map(category -> {
-            try {return categoryGetId(category.getName());}
+            try {return categoryGetId(category.getName().getValue());}
             catch (SQLException e) {throw new RuntimeException(e);}
         }).toArray(Integer[]::new);
 
@@ -143,7 +154,7 @@ public class DB_Controller {
         check_upd_add.setBoolean(4, check.isIncome().getValue());
         check_upd_add.setInt(5, categoryGetId(check.getPrimaryCategory().getName()));
         Integer[] ids = check.getCategories().stream().map(category -> {
-            try {return categoryGetId(category.getName());}
+            try {return categoryGetId(category.getName().getValue());}
             catch (SQLException e) {throw new RuntimeException(e);}
         }).toArray(Integer[]::new);
         check_upd_add.setArray(6, App.connection.createArrayOf("integer", ids));
@@ -211,12 +222,12 @@ public class DB_Controller {
     }
 
     public static void categories_upd_add(Category category) throws SQLException {
-        categories_upd_add.setString(1, category.getName());
-        categories_upd_add.setString(2, category.getColor());
+        categories_upd_add.setString(1, category.getName().getValue());
+        categories_upd_add.setString(2, category.getColor().getValue());
         categories_upd_add.executeUpdate();
     }
     public static void categories_upd_remove(Category category) throws SQLException {
-        categories_upd_remove.setInt(1, categoryGetId(category.getName()));
+        categories_upd_remove.setInt(1, categoryGetId(category.getName().getValue()));
         categories_upd_remove.executeUpdate();
     }
 }

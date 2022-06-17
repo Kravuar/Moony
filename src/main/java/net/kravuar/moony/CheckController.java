@@ -1,6 +1,6 @@
 package net.kravuar.moony;
 
-import com.jfoenix.controls.JFXListCell;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -9,9 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
-import javafx.util.converter.NumberStringConverter;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.CellFactory;
@@ -39,6 +39,9 @@ public class CheckController implements Settable<Check>, Initializable {
     private Label primaryCategory;
     @FXML
     private ListView<Category> categories;
+    @FXML
+    private Rectangle primeRect;
+
 
     private Check check;
 
@@ -50,7 +53,11 @@ public class CheckController implements Settable<Check>, Initializable {
             date.valueProperty().bind(check.getDate());
             description.textProperty().bind(check.getDescription());
             categories.setItems(check.getCategories());
-            primaryCategory.textProperty().bind(check.getPrimaryCategory());
+            primaryCategory.textProperty().bind(Bindings.createStringBinding(() -> check.getPrimaryCategory().getValue().getName().getValue(),
+                                                                             check.getPrimaryCategory()));
+
+            primeRect.fillProperty().bind(Bindings.createObjectBinding(() -> Color.valueOf(check.getPrimaryCategory().getValue().getColor().getValue()),
+                                                                       check.getPrimaryCategory()));
             if (check.isIncome().getValue())
                 dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Income.png"));
             else
@@ -62,7 +69,6 @@ public class CheckController implements Settable<Check>, Initializable {
     @FXML
     void setAsPrimary() throws SQLException {
         Category newPrimary = categories.getSelectionModel().getSelectedItem();
-        primaryCategory.setText(newPrimary.getName());
         check.setPrimaryCategory(newPrimary);
         Model.updateCheck(check, Check.Field.PRIMARY);
     }
@@ -89,8 +95,8 @@ public class CheckController implements Settable<Check>, Initializable {
 
     @FXML
     void removeCategory() throws SQLException {
-        String name = categories.getSelectionModel().getSelectedItem().getName();
-        categories.getItems().removeIf(category -> Objects.equals(category.getName(), name));
+        String name = categories.getSelectionModel().getSelectedItem().getName().getValue();
+        check.getCategories().removeIf(category -> Objects.equals(category.getName().getValue(), name));
         Model.updateCheck(check, Check.Field.CATEGORIES);
     }
 
@@ -111,6 +117,11 @@ public class CheckController implements Settable<Check>, Initializable {
                 catch (SQLException e) { throw new RuntimeException(e); }
             }
             else { amount.textProperty().unbind(); }
+        });
+        amount.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*[.]?\\d*")) {
+                amount.setText(newValue.replaceAll("[^\\d.]", ""));
+            }
         });
         date.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {

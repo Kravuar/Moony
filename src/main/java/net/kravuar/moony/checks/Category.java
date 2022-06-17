@@ -1,10 +1,11 @@
 package net.kravuar.moony.checks;
 
-import net.kravuar.moony.data.DB_Controller;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
-import java.sql.SQLException;
 
 public class Category {
+
     public static final class Field {
         public static final String NAME = "name";
         public static final String COLOR = "color";
@@ -12,37 +13,39 @@ public class Category {
         private Field() {}
     }
 
-    private String name;
-    private String color;
-
+    private final StringProperty name;
+    private final StringProperty color;
 
     public Category(String name, String color) {
-        this.name = name;
-        this.color = color;
+        this.name = new SimpleStringProperty(name);
+        this.color = new SimpleStringProperty(color);
     }
 
-    public String getName() {
+    public StringProperty getName() {
         return name;
     }
-    public String getColor() {
+    public StringProperty getColor() {
         return color;
     }
     public void setName(String name) {
-        this.name = name;
+        this.name.setValue(name);
     }
     public void setColor(String color) {
-        this.color = color;
+        this.color.setValue(color);
     }
 
 
     @Override
     public String toString(){
-        return name;
+        return name.getValue();
     }
 
-    public static final Category placeholder;
-    static {
-        try { placeholder = new Category("Placeholder",DB_Controller.categoryGetColor(1)); }
-        catch (SQLException e) { throw new RuntimeException(e); }
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) { return true; }
+        if (!(obj instanceof Category category)) { return false; }
+
+        return name.getValue().equals(category.name.getValue())
+                && color.getValue().equals(category.color.getValue());
     }
 }
