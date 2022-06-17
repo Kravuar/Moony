@@ -53,11 +53,15 @@ public class CheckController implements Settable<Check>, Initializable {
             date.valueProperty().bind(check.getDate());
             description.textProperty().bind(check.getDescription());
             categories.setItems(check.getCategories());
+
+            // Updates only when list of checks is updated, need to use listeners
             primaryCategory.textProperty().bind(Bindings.createStringBinding(() -> check.getPrimaryCategory().getValue().getName().getValue(),
                                                                              check.getPrimaryCategory()));
 
             primeRect.fillProperty().bind(Bindings.createObjectBinding(() -> Color.valueOf(check.getPrimaryCategory().getValue().getColor().getValue()),
                                                                        check.getPrimaryCategory()));
+
+            //
             if (check.isIncome().getValue())
                 dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Income.png"));
             else

@@ -1,5 +1,7 @@
 package net.kravuar.moony.checks;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -15,10 +17,13 @@ public class Category {
 
     private final StringProperty name;
     private final StringProperty color;
+    private final IntegerProperty id;
 
-    public Category(String name, String color) {
+
+    public Category(String name, String color, int id) {
         this.name = new SimpleStringProperty(name);
         this.color = new SimpleStringProperty(color);
+        this.id = new SimpleIntegerProperty(id);
     }
 
     public StringProperty getName() {
@@ -27,11 +32,17 @@ public class Category {
     public StringProperty getColor() {
         return color;
     }
+    public IntegerProperty getId() {
+        return id;
+    }
     public void setName(String name) {
         this.name.setValue(name);
     }
     public void setColor(String color) {
         this.color.setValue(color);
+    }
+    public void setId(int id) {
+        this.id.setValue(id);
     }
 
 
@@ -45,7 +56,6 @@ public class Category {
         if (obj == this) { return true; }
         if (!(obj instanceof Category category)) { return false; }
 
-        return name.getValue().equals(category.name.getValue())
-                && color.getValue().equals(category.color.getValue());
+        return id.get() == category.id.get();
     }
 }

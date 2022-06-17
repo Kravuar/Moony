@@ -1,9 +1,7 @@
 package net.kravuar.moony.checks;
 
 import javafx.beans.property.*;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -29,7 +29,7 @@ public class AddCategoryController {
         Category category;
 
         if (!isEditMode){
-            category = new Category(cname,cColor);
+            category = new Category(cname,cColor, -1);
             Model.addCategory(category);
         }
         else {

@@ -7,17 +7,11 @@ import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Model {
-    public static final ObservableList<Check> checks = FXCollections.observableArrayList(check -> new Observable[]{
-            check.getAmount(),
-            check.getDescription(),
-            check.isIncome(),
-            check.getDate(),
-            check.getPrimaryCategory(),
-            check.getCategories(),
-            check.getId()
-    });
+    public static final ObservableList<Check> checks = FXCollections.observableArrayList();
     public static final ObservableList<Category> categories = FXCollections.observableArrayList(category -> new Observable[]{
             category.getColor(),
             category.getName()
@@ -41,9 +35,10 @@ public class Model {
             default -> throw new RuntimeException("No such field");
         }
     }
-    public static void addCheck(Check check) throws SQLException {
+    public static void addCheck(Category primary) throws SQLException {
+        Check check = new Check(new ArrayList<>(),primary,0.0D,true, LocalDate.now(),"", -1);
         checks.add(check);
-        DB_Controller.check_upd_add(check);
+        check.setId(DB_Controller.check_upd_add(check));
     }
     public static void removeCheck(Check check) throws SQLException {
         checks.remove(check);
@@ -53,16 +48,14 @@ public class Model {
 
     public static void updateCategory(Category category, String field) throws SQLException {
         switch (field) {
-            case Category.Field.NAME -> {
-                DB_Controller.categories_upd_name(category.getName().getValue(),DB_Controller.categoryGetId(category.getName().getValue()));
-            }
-            case Category.Field.COLOR -> DB_Controller.categories_upd_color(category.getColor().getValue(),DB_Controller.categoryGetId(category.getName().getValue()));
+            case Category.Field.NAME -> DB_Controller.categories_upd_name(category.getName().getValue(), category.getId().getValue());
+            case Category.Field.COLOR -> DB_Controller.categories_upd_color(category.getColor().getValue(), category.getId().getValue());
             default -> throw new RuntimeException("No such field");
         }
     }
     public static void addCategory(Category category) throws SQLException {
         categories.add(category);
-        DB_Controller.categories_upd_add(category);
+        category.setId(DB_Controller.categories_upd_add(category));
     }
     public static void removeCategory(Category category) throws SQLException {
         categories.remove(category);
