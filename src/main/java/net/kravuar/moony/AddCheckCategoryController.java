@@ -10,7 +10,6 @@ import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.CellFactory;
 import net.kravuar.moony.data.DB_Controller;
-import net.kravuar.moony.data.Model;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -23,10 +22,9 @@ public class AddCheckCategoryController implements Initializable {
     Check check;
 
     @FXML
-    void addCategory() throws SQLException {
+    void addCategory() {
         Category newCategory = list.getSelectionModel().getSelectedItem();
         check.getCategories().add(newCategory);
-        Model.updateCheck(check,Check.Field.CATEGORIES);
         ((Stage) list.getScene().getWindow()).close();
     }
 

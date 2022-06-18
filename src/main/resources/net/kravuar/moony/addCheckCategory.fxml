@@ -4,11 +4,11 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuItem?>
 
-<ListView fx:id="list" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.kravuar.moony.AddCheckCategoryController">
+<ListView fx:id="list" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="300.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.kravuar.moony.AddCheckCategoryController">
    <contextMenu>
       <ContextMenu>
          <items>
-            <MenuItem mnemonicParsing="false" onAction="#addCategory" text="Add" />
+            <MenuItem mnemonicParsing="false" onAction="#addCategory" text="Choose" />
          </items>
       </ContextMenu>
    </contextMenu>

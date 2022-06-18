@@ -78,4 +78,12 @@ public class Check {
     public void setId(int id) {
         this.id.setValue(id);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) { return true; }
+        if (!(obj instanceof Check check)) { return false; }
+
+        return id.get() == check.id.get();
+    }
 }

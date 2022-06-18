@@ -1,5 +1,6 @@
 package net.kravuar.moony;
 
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -11,5 +12,8 @@ public class Util {
         stage.getIcons().add(new Image("file:src/main/resources/net/kravuar/moony/assets/Icon.png"));
         stage.setScene(scene);
         return stage;
+    }
+    public static FXMLLoader getLoader(String fxml) {
+        return new FXMLLoader(App.class.getResource(fxml));
     }
 }

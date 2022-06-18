@@ -1,6 +1,7 @@
 package net.kravuar.moony;
 
 import javafx.beans.binding.Bindings;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -54,14 +55,11 @@ public class CheckController implements Settable<Check>, Initializable {
             description.textProperty().bind(check.getDescription());
             categories.setItems(check.getCategories());
 
-            // Updates only when list of checks is updated, need to use listeners
             primaryCategory.textProperty().bind(Bindings.createStringBinding(() -> check.getPrimaryCategory().getValue().getName().getValue(),
-                                                                             check.getPrimaryCategory()));
-
+                                                                             check.getPrimaryCategory().getValue().getName()));
             primeRect.fillProperty().bind(Bindings.createObjectBinding(() -> Color.valueOf(check.getPrimaryCategory().getValue().getColor().getValue()),
-                                                                       check.getPrimaryCategory()));
+                                                                       check.getPrimaryCategory().getValue().getColor()));
 
-            //
             if (check.isIncome().getValue())
                 dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Income.png"));
             else
@@ -88,13 +86,14 @@ public class CheckController implements Settable<Check>, Initializable {
     }
 
     @FXML
-    void addCategory() throws IOException {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("addCheckCategory.fxml"));
+    void addCategory() throws IOException, SQLException {
+        FXMLLoader loader = Util.getLoader("addCheckCategory.fxml");
         Parent parent = loader.load();
         AddCheckCategoryController controller = loader.getController();
         controller.setData(check);
         Stage stage = createHelperStage(new Scene(parent));
-        stage.show();
+        stage.showAndWait();
+        Model.updateCheck(check,Check.Field.CATEGORIES);
     }
 
     @FXML

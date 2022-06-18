@@ -49,10 +49,10 @@ public class MainController implements Initializable {
         scenes = new HashMap<>();
         VBox box;
         try {
-            scenes.put("storage",FXMLLoader.load(App.class.getResource("storage.fxml")));
-            scenes.put("statistics",FXMLLoader.load(App.class.getResource("statistics.fxml")));
-            scenes.put("settings",FXMLLoader.load(App.class.getResource("settings.fxml")));
-            FXMLLoader menuLoader = new FXMLLoader(App.class.getResource("menu.fxml"));
+            scenes.put("storage", Util.getLoader("storage.fxml").load());
+            scenes.put("statistics", Util.getLoader("statistics.fxml").load());
+            scenes.put("settings", Util.getLoader("settings.fxml").load());
+            FXMLLoader menuLoader = Util.getLoader("menu.fxml");
             box = menuLoader.load();
             MenuController menuController = menuLoader.getController();
             menuController.setMainController(this);

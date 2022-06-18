@@ -32,7 +32,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
 
 
-        FXMLLoader mainLoader = new FXMLLoader(App.class.getResource("main.fxml"));
+        FXMLLoader mainLoader = Util.getLoader("main.fxml");
         Scene scene = new Scene(mainLoader.load());
         MainController mainController = mainLoader.getController();
 
