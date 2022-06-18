@@ -31,28 +31,37 @@ public class SettingsController implements Initializable {
 
 
 
-
-    @FXML
-    void addCategory() throws IOException {
+    private void processChange(boolean isEditMode) throws IOException, SQLException {
         FXMLLoader loader = Util.getLoader("addCategory.fxml");
         Parent parent = loader.load();
         AddCategoryController controller = loader.getController();
-        controller.setData(list,"",false);
         Stage stage = createHelperStage(new Scene(parent));
-        stage.show();
+        stage.showAndWait();
+        Category category = controller.getCategory();
+
+        if (!isEditMode)
+            Model.addCategory(category);
+        else {
+            category = list.getSelectionModel().getSelectedItem();
+            category.setName(category.getName().getValue());
+            category.setColor(category.getColor().getValue());
+            Model.updateCategory(category,Category.Field.NAME);
+            Model.updateCategory(category,Category.Field.COLOR);
+            list.getSelectionModel().clearSelection();
+        }
+
     }
 
     @FXML
-    void changeCategory() throws IOException {
+    void addCategory() throws IOException, SQLException {
+        processChange(false);
+    }
+
+    @FXML
+    void changeCategory() throws IOException, SQLException {
         Category selected = list.getSelectionModel().getSelectedItem();
-        if (selected != null){
-            FXMLLoader loader = Util.getLoader("addCategory.fxml");
-            Parent parent = loader.load();
-            AddCategoryController controller = loader.getController();
-            controller.setData(list, selected.getName().getValue(),true);
-            Stage stage = createHelperStage(new Scene(parent));
-            stage.show();
-        }
+        if (selected != null)
+            processChange(true);
     }
 
     @FXML

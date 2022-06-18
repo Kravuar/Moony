@@ -1,7 +1,5 @@
 package net.kravuar.moony;
 
-import javafx.application.Platform;
-import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -9,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
@@ -33,15 +30,15 @@ public class StorageController implements Initializable {
 
     @FXML
     void addCheck() throws SQLException, IOException {
-        Check check = new Check(new ArrayList<>(), null, 0, true, LocalDate.now(),"", -1);
         FXMLLoader loader = Util.getLoader("addCheckCategory.fxml");
         Parent parent = loader.load();
         AddCheckCategoryController controller = loader.getController();
-        controller.setData(check);
         Stage stage = createHelperStage(new Scene(parent));
         stage.setTitle("Choose Category");
         stage.showAndWait();
-        if (!check.getCategories().isEmpty()){
+        Category category = controller.getCategory();
+        if (category != null){
+            Check check = new Check(new ArrayList<>(List.of(category)), null, 0, true, LocalDate.now(),"", -1);
             check.setPrimaryCategory(check.getCategories().get(0));
             Model.addCheck(check);
         }

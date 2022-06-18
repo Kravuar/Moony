@@ -3,13 +3,13 @@
     -fx-border-color: #777777;
     -fx-border-width: 2px 2px 0px 2px;
     -fx-font-size: 20;
-    -fx-text-fill: #9c6cc9;
+    -fx-text-fill: #000000;
 }
 
 .myLabel {
     -fx-background-color: #d3c8e0;
     -fx-font-size: 18;
-    -fx-text-fill: #9c6cc9;
+    -fx-text-fill: #000000;
     -fx-border-color: #927bb4;
     -fx-border-width: 3px 0px 3px 0px;
     -fx-padding: 0px 5px 0px 5px;

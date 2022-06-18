@@ -3,9 +3,6 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.DatePicker?>
@@ -24,7 +21,7 @@
    <top>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #E5E5E5;" BorderPane.alignment="CENTER">
          <children>
-            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #DCC6DC;" text="Statistics" textFill="#9c6cc9">
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #DCC6DC;" text="Statistics">
                <font>
                   <Font size="28.0" />
                </font>
@@ -66,33 +63,15 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <BarChart maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1">
-              <xAxis>
-                <CategoryAxis side="BOTTOM" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis side="LEFT" />
-              </yAxis>
-            </BarChart>
-            <PieChart labelsVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" />
-            <BorderPane>
-               <top>
-                  <VBox BorderPane.alignment="CENTER">
-                     <children>
-                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Categories" textFill="#732e83">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-               </top>
+            <PieChart fx:id="incomes" labelsVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: #927bb4; -fx-border-width: 3px 3px 3px 0px;" title="INCOMES" GridPane.columnIndex="2" />
+            <BorderPane style="-fx-border-color: #927bb4; -fx-border-width: 3px 3px 3px 0px;">
                <center>
-                  <ListView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+                  <ListView fx:id="list" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
                      <contextMenu>
                         <ContextMenu>
                           <items>
                             <MenuItem mnemonicParsing="false" onAction="#addCategory" text="Add" />
+                            <MenuItem mnemonicParsing="false" onAction="#removeCategory" text="Remove" />
                           </items>
                         </ContextMenu>
                      </contextMenu></ListView>
@@ -100,7 +79,7 @@
                <bottom>
                   <VBox BorderPane.alignment="CENTER">
                      <children>
-                        <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#changeCategories" styleClass="add" stylesheets="@styles/button.css" text="Change Categories" textFill="#732e83">
+                        <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#addAll" styleClass="add" stylesheets="@styles/button.css" text="Add all" textFill="#732e83">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -111,12 +90,20 @@
                               <MaterialDesignIconView glyphName="VIEW_LIST" />
                            </graphic>
                         </JFXButton>
-                        <DatePicker fx:id="fromDate" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="From" />
+                        <DatePicker fx:id="fromDate" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="From" style="-fx-border-color: #927bb4; -fx-border-width: 3px 0px 0px 0px;" />
                         <DatePicker fx:id="toDate" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="To" />
                      </children>
                   </VBox>
                </bottom>
+               <top>
+                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Categories" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </top>
             </BorderPane>
+            <PieChart fx:id="expenses" style="-fx-border-color: #927bb4; -fx-border-width: 3px 3px 3px 0px;" title="EXPENSES" GridPane.columnIndex="1" />
          </children>
       </GridPane>
    </center>

@@ -1,13 +1,10 @@
 package net.kravuar.moony;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import net.kravuar.moony.checks.Category;
-import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.CellFactory;
 import net.kravuar.moony.data.DB_Controller;
 
@@ -19,17 +16,16 @@ public class AddCheckCategoryController implements Initializable {
     @FXML
     private ListView<Category> list;
 
-    Check check;
+    Category category;
 
     @FXML
     void addCategory() {
-        Category newCategory = list.getSelectionModel().getSelectedItem();
-        check.getCategories().add(newCategory);
+        category = list.getSelectionModel().getSelectedItem();
         ((Stage) list.getScene().getWindow()).close();
     }
 
-    public void setData(Check check) {
-        this.check = check;
+    public Category getCategory() {
+        return category;
     }
 
     @Override

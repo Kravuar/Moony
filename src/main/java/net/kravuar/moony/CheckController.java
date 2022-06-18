@@ -90,17 +90,22 @@ public class CheckController implements Settable<Check>, Initializable {
         FXMLLoader loader = Util.getLoader("addCheckCategory.fxml");
         Parent parent = loader.load();
         AddCheckCategoryController controller = loader.getController();
-        controller.setData(check);
         Stage stage = createHelperStage(new Scene(parent));
         stage.showAndWait();
-        Model.updateCheck(check,Check.Field.CATEGORIES);
+        Category category = controller.getCategory();
+        if (category != null){
+            check.getCategories().add(category);
+            Model.updateCheck(check,Check.Field.CATEGORIES);
+        }
     }
 
     @FXML
     void removeCategory() throws SQLException {
-        String name = categories.getSelectionModel().getSelectedItem().getName().getValue();
-        check.getCategories().removeIf(category -> Objects.equals(category.getName().getValue(), name));
-        Model.updateCheck(check, Check.Field.CATEGORIES);
+        Category category = categories.getSelectionModel().getSelectedItem();
+        if (category != null) {
+            check.getCategories().removeIf(candidate -> candidate.equals(category));
+            Model.updateCheck(check, Check.Field.CATEGORIES);
+        }
     }
 
     @Override
