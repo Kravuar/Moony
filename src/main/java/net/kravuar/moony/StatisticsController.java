@@ -22,8 +22,19 @@ import net.kravuar.moony.data.Model;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import static net.kravuar.moony.Util.createHelperStage;
 
 public class StatisticsController implements Initializable {
@@ -43,6 +54,31 @@ public class StatisticsController implements Initializable {
     @FXML
     void refresh(ActionEvent event) {
         // Check if list contains deleted categories, delete them
+        LocalDate from = fromDate.getValue(); LocalDate to = toDate.getValue();
+        List<Check> data = Model.checks.stream().filter(check -> {
+            LocalDate checkDate = check.getDate().getValue();
+            return checkDate.isAfter(from)
+                    && checkDate.isBefore(to)
+                    && list.getItems().stream().anyMatch(category -> check.getCategories().contains(category));
+        }).toList();
+        // Che to typit on
+        Map<Category, Double> incomesData = list.getItems().stream()
+                .collect(toMap(Function.identity(), c -> 0.0));
+        Map<Category, Double> expensesData = list.getItems().stream()
+                .collect(toMap(Function.identity(), c -> 0.0));
+
+        data.forEach(check -> {
+            if (check.isIncome().getValue())
+                check.getCategories().forEach(category -> incomesData.merge(category, check.getAmount().getValue(), Double::sum));
+            else
+                check.getCategories().forEach(category -> expensesData.merge(category, check.getAmount().getValue(), Double::sum));
+        });
+
+        incomes.getData().setAll(incomesData.entrySet().stream().map(entry -> new PieChart.Data(entry.getKey().getName().getValue(),entry.getValue())).collect(toList()));
+        expenses.getData().setAll(expensesData.entrySet().stream().map(entry -> new PieChart.Data(entry.getKey().getName().getValue(),entry.getValue())).collect(toList()));
+
+
+
     }
 
 
