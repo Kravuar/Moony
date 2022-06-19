@@ -5,11 +5,9 @@ import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class DB_Controller {
     // CATEGORIES
@@ -19,7 +17,7 @@ public class DB_Controller {
     private static final String SQL_UPDATE_CATEGORIES_NAME = "update categories set name = ? where id = ?";
     private static final String SQL_UPDATE_CATEGORIES_COLOR = "update categories set color = ? where id = ?";
 
-    private static final String SQL_INSERT_CATEGORY = "insert into categories (name,color) values (?,?) returning id";
+    private static final String SQL_INSERT_CATEGORY = "insert into categories (name,color) values (?,?)";
     private static final String SQL_REMOVE_CATEGORY = "delete from categories where id = ?";
 
 
@@ -33,7 +31,7 @@ public class DB_Controller {
     private static final String SQL_UPDATE_CHECK_PRIMARY = "update checks set primaryid = ? where id = ?";
     private static final String SQL_UPDATE_CHECK_CATEGORIES = "update checks set categories = ? where id = ?";
 
-    private static final String SQL_INSERT_CHECK = "insert into checks (amount,description,date,income,primaryid,categories) values (?,?,?,?,?,?) returning id";
+    private static final String SQL_INSERT_CHECK = "insert into checks (amount,description,date,income,primaryid,categories) values (?,?,?,?,?,?)";
     private static final String SQL_REMOVE_CHECK = "delete from checks where id = ?";
 
 
@@ -68,7 +66,7 @@ public class DB_Controller {
             check_upd_date = App.connection.prepareStatement(SQL_UPDATE_CHECK_DATE);
             check_upd_income = App.connection.prepareStatement(SQL_UPDATE_CHECK_INCOME);
             check_upd_primary = App.connection.prepareStatement(SQL_UPDATE_CHECK_PRIMARY);
-            check_upd_add = App.connection.prepareStatement(SQL_INSERT_CHECK);
+            check_upd_add = App.connection.prepareStatement(SQL_INSERT_CHECK, Statement.RETURN_GENERATED_KEYS);
             check_upd_remove = App.connection.prepareStatement(SQL_REMOVE_CHECK);
             check_upd_categories = App.connection.prepareStatement(SQL_UPDATE_CHECK_CATEGORIES);
 
@@ -76,7 +74,7 @@ public class DB_Controller {
             categories_get_name = App.connection.prepareStatement(SQL_GET_CATEGORY_NAME);
             categories_upd_name = App.connection.prepareStatement(SQL_UPDATE_CATEGORIES_NAME);
             categories_upd_color = App.connection.prepareStatement(SQL_UPDATE_CATEGORIES_COLOR);
-            categories_upd_add = App.connection.prepareStatement(SQL_INSERT_CATEGORY);
+            categories_upd_add = App.connection.prepareStatement(SQL_INSERT_CATEGORY, Statement.RETURN_GENERATED_KEYS);
             categories_upd_remove = App.connection.prepareStatement(SQL_REMOVE_CATEGORY);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -124,9 +122,12 @@ public class DB_Controller {
     public static int categories_upd_add(Category category) throws SQLException {
         categories_upd_add.setString(1, category.getName().getValue());
         categories_upd_add.setString(2, category.getColor().getValue());
-        ResultSet set = categories_upd_add.executeQuery();
-        set.next();
-        return set.getInt(1);
+        categories_upd_add.executeUpdate();
+        ResultSet set = categories_upd_add.getGeneratedKeys();
+        if (set.next())
+            return (int) set.getLong(1);
+        else
+            throw new RuntimeException("No id returned");
     }
     public static void categories_upd_remove(Category category) throws SQLException {
         categories_upd_remove.setInt(1, category.getId().getValue());
@@ -145,7 +146,7 @@ public class DB_Controller {
             ArrayList<Category> categories = new ArrayList<>();
 
             if (array != null) {
-                Integer[] ids = (Integer[]) array.getArray();
+                Object[] ids = (Object[]) array.getArray();
                 categories.addAll(
                         Model.categories.stream().filter(category -> Arrays.stream(ids)
                                 .anyMatch(id -> Objects.equals(id, category.getId().getValue()))).toList());
@@ -210,9 +211,13 @@ public class DB_Controller {
                 .stream()
                 .map(category -> category.getId().getValue()).toArray(Integer[]::new);
         check_upd_add.setArray(6, App.connection.createArrayOf("integer", ids));
-        ResultSet set = check_upd_add.executeQuery();
-        set.next();
-        return set.getInt(1);
+        check_upd_add.executeUpdate();
+        ResultSet set = check_upd_add.getGeneratedKeys();
+        if (set.next())
+            return set.getInt(1);
+        else
+            throw new RuntimeException("No id returned");
+
     }
     public static void check_upd_remove(Check check) throws SQLException {
         check_upd_remove.setInt(1, check.getId().getValue());

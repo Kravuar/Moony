@@ -39,12 +39,22 @@ public class SettingsController implements Initializable {
         stage.showAndWait();
         Category category = controller.getCategory();
 
-        if (!isEditMode)
+
+        if (!isEditMode){
+            if (Model.categories.stream().anyMatch(candidate -> candidate.getName().getValue().equals(category.getName().getValue()))){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Category with such name already exists.");
+                Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+                alertStage.getIcons().add(new Image("file:src/main/resources/net/kravuar/moony/assets/Icon.png"));
+                alertStage.show();
+                return;
+            }
             Model.addCategory(category);
+        }
         else {
-            category = list.getSelectionModel().getSelectedItem();
-            category.setName(category.getName().getValue());
-            category.setColor(category.getColor().getValue());
+            Category toChange = list.getSelectionModel().getSelectedItem();
+            toChange.setName(category.getName().getValue());
+            toChange.setColor(category.getColor().getValue());
             Model.updateCategory(category,Category.Field.NAME);
             Model.updateCategory(category,Category.Field.COLOR);
             list.getSelectionModel().clearSelection();
