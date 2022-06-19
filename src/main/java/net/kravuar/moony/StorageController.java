@@ -47,7 +47,7 @@ public class StorageController implements Initializable {
     @FXML
     void findCheck() {
         String toFind = description.getText().toLowerCase();
-        list.setItems(App.data.filtered(check -> check.getDescription().toString().toLowerCase().contains(toFind)));
+        list.setItems(Model.checks.filtered(check -> check.getDescription().toString().toLowerCase().contains(toFind)));
     }
 
     @FXML
@@ -56,7 +56,7 @@ public class StorageController implements Initializable {
         if (delCheck != null) {
             Model.removeCheck(delCheck);
             list.getItems().removeIf(check -> check.getId() == delCheck.getId());
-            App.data.removeIf(check -> check.getId() == delCheck.getId());
+            Model.checks.removeIf(check -> check.getId() == delCheck.getId());
         }
     }
 
