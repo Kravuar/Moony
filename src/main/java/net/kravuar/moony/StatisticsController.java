@@ -1,19 +1,18 @@
 package net.kravuar.moony;
 
-import javafx.beans.binding.ObjectBinding;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
@@ -23,13 +22,10 @@ import net.kravuar.moony.data.Model;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -50,18 +46,32 @@ public class StatisticsController implements Initializable {
     private PieChart expenses;
     @FXML
     private PieChart incomes;
+    @FXML
+    private Label totalExpensesLabel;
+    @FXML
+    private Label totalIncomesLabel;
+
+    private final Label info = new Label("");
 
     @FXML
-    void refresh(ActionEvent event) {
-        // Check if list contains deleted categories, delete them
+    void refresh() {
+        List<Category> removed = list.getItems().stream().filter(category -> !Model.categories.contains(category)).toList();
+        list.getItems().removeAll(removed);
         LocalDate from = fromDate.getValue(); LocalDate to = toDate.getValue();
+        if (from == null)
+            from = LocalDate.MIN;
+        if (to == null)
+            to = LocalDate.MAX;
+
+        LocalDate finalFrom = from;
+        LocalDate finalTo = to;
         List<Check> data = Model.checks.stream().filter(check -> {
             LocalDate checkDate = check.getDate().getValue();
-            return checkDate.isAfter(from)
-                    && checkDate.isBefore(to)
+            return checkDate.isAfter(finalFrom)
+                    && checkDate.isBefore(finalTo)
                     && list.getItems().stream().anyMatch(category -> check.getCategories().contains(category));
         }).toList();
-        // Che to typit on
+
         Map<Category, Double> incomesData = list.getItems().stream()
                 .collect(toMap(Function.identity(), c -> 0.0));
         Map<Category, Double> expensesData = list.getItems().stream()
@@ -73,12 +83,53 @@ public class StatisticsController implements Initializable {
             else
                 check.getCategories().forEach(category -> expensesData.merge(category, check.getAmount().getValue(), Double::sum));
         });
+        Double totalIncomes = incomesData.values().stream().reduce(0.0, Double::sum);
+        Double totalExpenses = expensesData.values().stream().reduce(0.0, Double::sum);
+        totalExpensesLabel.setText("Total: " + totalExpenses);
+        totalIncomesLabel.setText("Total: " + totalIncomes);
 
-        incomes.getData().setAll(incomesData.entrySet().stream().map(entry -> new PieChart.Data(entry.getKey().getName().getValue(),entry.getValue())).collect(toList()));
-        expenses.getData().setAll(expensesData.entrySet().stream().map(entry -> new PieChart.Data(entry.getKey().getName().getValue(),entry.getValue())).collect(toList()));
+        incomes.getData().setAll(incomesData.entrySet().stream().map(entry -> new PieChart.Data(entry.getKey().getName().getValue(),entry.getValue())).toList());
+        expenses.getData().setAll(expensesData.entrySet().stream().map(entry -> new PieChart.Data(entry.getKey().getName().getValue(),entry.getValue())).toList());
 
 
+        AtomicInteger i = new AtomicInteger(0);
+        incomes.getData().forEach(nodeData -> {
+            String color = Color.web(list.getItems().get(i.getAndIncrement())
+                            .getColor()
+                            .getValue())
+                            .toString()
+                            .replace("0x","#");
+            nodeData.getNode().setStyle(
+                "-fx-pie-color: " + color.substring(0,color.length() - 2) + ";");
+        });
+        i.set(0);
+        expenses.getData().forEach(nodeData -> {
+            String color = Color.web(list.getItems().get(i.getAndIncrement())
+                            .getColor()
+                            .getValue())
+                            .toString()
+                            .replace("0x","#");
+            nodeData.getNode().setStyle(
+                    "-fx-pie-color: " + color.substring(0,color.length() - 2) + ";");
+        });
 
+        for (final PieChart.Data nodeData : incomes.getData()) {
+            nodeData.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+                info.setTranslateX(e.getSceneX());
+                info.setTranslateY(e.getSceneY());
+
+                info.setText(String.valueOf(nodeData.getPieValue()));
+            });
+        }
+        for (final PieChart.Data nodeData : expenses.getData()) {
+            nodeData.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+                info.setTranslateX(e.getSceneX());
+                info.setTranslateY(e.getSceneY());
+
+                info.setText(String.valueOf(nodeData.getPieValue()));
+            });
+        }
+        // add label to stage
     }
 
 

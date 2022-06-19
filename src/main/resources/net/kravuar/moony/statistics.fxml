@@ -63,7 +63,18 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <PieChart fx:id="incomes" labelsVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-color: #927bb4; -fx-border-width: 3px 3px 3px 0px;" title="INCOMES" GridPane.columnIndex="2" />
+            <BorderPane style="-fx-border-color: #927bb4; -fx-border-width: 3px 3px 3px 0px;" GridPane.columnIndex="2">
+               <center>
+                  <PieChart fx:id="incomes" labelsVisible="false" legendVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="INCOMES" />
+               </center>
+               <bottom>
+                  <Label fx:id="totalExpensesLabel" alignment="CENTER" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </bottom>
+            </BorderPane>
             <BorderPane style="-fx-border-color: #927bb4; -fx-border-width: 3px 3px 3px 0px;">
                <center>
                   <ListView fx:id="list" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
@@ -103,7 +114,18 @@
                   </Label>
                </top>
             </BorderPane>
-            <PieChart fx:id="expenses" style="-fx-border-color: #927bb4; -fx-border-width: 3px 3px 3px 0px;" title="EXPENSES" GridPane.columnIndex="1" />
+            <BorderPane style="-fx-border-color: #927bb4; -fx-border-width: 3px 3px 3px 0px;" GridPane.columnIndex="1">
+               <center>
+                  <PieChart fx:id="expenses" labelsVisible="false" legendVisible="false" title="EXPENSES" />
+               </center>
+               <bottom>
+                  <Label fx:id="totalIncomesLabel" alignment="CENTER" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </bottom>
+            </BorderPane>
          </children>
       </GridPane>
    </center>
