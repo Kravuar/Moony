@@ -65,10 +65,10 @@
          <children>
             <BorderPane style="-fx-border-color: #927bb4; -fx-border-width: 3px 3px 3px 0px;" GridPane.columnIndex="2">
                <center>
-                  <PieChart fx:id="incomes" labelsVisible="false" legendVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="INCOMES" />
+                  <PieChart fx:id="incomes" legendVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="INCOMES" />
                </center>
                <bottom>
-                  <Label fx:id="totalExpensesLabel" alignment="CENTER" BorderPane.alignment="CENTER">
+                  <Label fx:id="totalIncomesLabel" alignment="CENTER" BorderPane.alignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -85,7 +85,8 @@
                             <MenuItem mnemonicParsing="false" onAction="#removeCategory" text="Remove" />
                           </items>
                         </ContextMenu>
-                     </contextMenu></ListView>
+                     </contextMenu>
+                  </ListView>
                </center>
                <bottom>
                   <VBox BorderPane.alignment="CENTER">
@@ -116,10 +117,10 @@
             </BorderPane>
             <BorderPane style="-fx-border-color: #927bb4; -fx-border-width: 3px 3px 3px 0px;" GridPane.columnIndex="1">
                <center>
-                  <PieChart fx:id="expenses" labelsVisible="false" legendVisible="false" title="EXPENSES" />
+                  <PieChart fx:id="expenses" legendVisible="false" title="EXPENSES" />
                </center>
                <bottom>
-                  <Label fx:id="totalIncomesLabel" alignment="CENTER" BorderPane.alignment="CENTER">
+                  <Label fx:id="totalExpensesLabel" alignment="CENTER" BorderPane.alignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
