@@ -7,8 +7,6 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -67,12 +65,12 @@ public class MainController implements Initializable {
         HamburgerSlideCloseTransition transition = new HamburgerSlideCloseTransition(hamburger);
         transition.setRate(-1);
         hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> {
-            if (drawer.isClosing() || drawer.isOpening())
+            if (drawer.isHiding() || drawer.isShowing())
                 return;
             transition.setRate(transition.getRate() * -1);
             transition.play();
 
-            if (drawer.isOpened())
+            if (drawer.isShown())
                 drawer.close();
             else{
                 drawer.toFront();
