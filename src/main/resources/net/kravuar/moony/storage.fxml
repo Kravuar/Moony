@@ -29,7 +29,7 @@
                   <MaterialDesignIconView glyphName="ARCHIVE" />
                </graphic>
             </Label>
-            <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#addCheck" styleClass="add" stylesheets="@styles/button.css" text="Add" textFill="#732e83">
+            <JFXButton fx:id="addButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#addCheck" styleClass="add" stylesheets="@styles/button.css" text="Add" textFill="#732e83">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
@@ -76,6 +76,20 @@
                   <Font size="19.0" />
                </font>
             </TextField>
+            <JFXButton fx:id="filterButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#filterPopup" text="Filter by categories" textFill="#732e83">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <graphic>
+                  <MaterialDesignIconView glyphName="FORMAT_LIST_BULLETED" />
+               </graphic>
+            </JFXButton>
          </children>
       </HBox>
    </top>

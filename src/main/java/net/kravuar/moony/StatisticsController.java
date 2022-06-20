@@ -3,6 +3,7 @@ package net.kravuar.moony;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
@@ -52,6 +53,8 @@ public class StatisticsController implements Initializable {
         List<Category> removed = list.getItems().stream().filter(category -> !Model.categories.contains(category)).toList();
         list.getItems().removeAll(removed);
         List<Category> categories = list.getItems().stream().toList();
+        if (categories.isEmpty())
+            return;
         LocalDate from = fromDate.getValue(); LocalDate to = toDate.getValue();
         if (from == null)
             from = LocalDate.MIN;
@@ -117,15 +120,20 @@ public class StatisticsController implements Initializable {
 
 
     @FXML
-    void addAll() {
-        list.setItems(Model.categories);
+    void addOrRemoveAll() {
+        if (list.getItems().isEmpty())
+            list.getItems().addAll(Model.categories);
+        else
+            list.getItems().clear();
     }
     @FXML
     void addCategory() throws IOException {
         FXMLLoader loader = Util.getLoader("addCheckCategory.fxml");
         Parent parent = loader.load();
         AddCheckCategoryController controller = loader.getController();
-        Stage stage = createHelperStage(new Scene(parent));
+        var pos = list.localToScreen(0.0,0.0);
+        pos = pos.add(new Point2D(list.getWidth(),0.0));
+        Stage stage = createHelperStage(new Scene(parent),pos);
         stage.showAndWait();
         Category category = controller.getCategory();
         if (category != null)

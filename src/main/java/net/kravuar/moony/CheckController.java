@@ -5,6 +5,7 @@ import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -90,7 +91,9 @@ public class CheckController implements Settable<Check>, Initializable {
         FXMLLoader loader = Util.getLoader("addCheckCategory.fxml");
         Parent parent = loader.load();
         AddCheckCategoryController controller = loader.getController();
-        Stage stage = createHelperStage(new Scene(parent));
+        var pos = categories.localToScreen(0.0,0.0);
+        pos = pos.add(new Point2D(categories.getWidth(),0.0));
+        Stage stage = createHelperStage(new Scene(parent), pos);
         stage.showAndWait();
         Category category = controller.getCategory();
         if (category != null){

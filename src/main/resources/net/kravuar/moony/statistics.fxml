@@ -91,7 +91,7 @@
                <bottom>
                   <VBox BorderPane.alignment="CENTER">
                      <children>
-                        <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#addAll" styleClass="add" stylesheets="@styles/button.css" text="Add all" textFill="#732e83">
+                        <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#addOrRemoveAll" styleClass="add" stylesheets="@styles/button.css" text="Add/remove all" textFill="#732e83">
                            <font>
                               <Font size="20.0" />
                            </font>

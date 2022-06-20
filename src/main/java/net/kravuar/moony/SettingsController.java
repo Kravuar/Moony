@@ -1,8 +1,10 @@
 package net.kravuar.moony;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -35,7 +37,9 @@ public class SettingsController implements Initializable {
         FXMLLoader loader = Util.getLoader("addCategory.fxml");
         Parent parent = loader.load();
         AddCategoryController controller = loader.getController();
-        Stage stage = createHelperStage(new Scene(parent));
+        var pos = list.localToScreen(0.0,0.0);
+        pos = pos.add(new Point2D(300,0));
+        Stage stage = createHelperStage(new Scene(parent), pos);
         stage.showAndWait();
         Category category = controller.getCategory();
 
@@ -65,6 +69,7 @@ public class SettingsController implements Initializable {
     @FXML
     void addCategory() throws IOException, SQLException {
         processChange(false);
+
     }
 
     @FXML

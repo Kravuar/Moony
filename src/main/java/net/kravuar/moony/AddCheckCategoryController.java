@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.customList.CellFactory;
 import net.kravuar.moony.data.DB_Controller;
+import net.kravuar.moony.data.Model;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -31,7 +32,6 @@ public class AddCheckCategoryController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         list.setCellFactory(new CellFactory<Category,CategoryController>("category.fxml"));
-        try { list.getItems().addAll(DB_Controller.loadCategories()); }
-        catch (SQLException e) { throw new RuntimeException(e); }
+        list.setItems(Model.categories);
     }
 }
