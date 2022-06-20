@@ -16,6 +16,10 @@ public class Util {
         stage.setX(at.getX());
         stage.setY(at.getY());
         stage.setScene(scene);
+        stage.focusedProperty().addListener((ov, onHidden, onShown) -> {
+            if (onHidden)
+                stage.close();
+        });
         return stage;
     }
     public static FXMLLoader getLoader(String fxml) {

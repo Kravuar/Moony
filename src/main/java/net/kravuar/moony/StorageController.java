@@ -10,10 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import net.kravuar.moony.checks.Category;
@@ -27,6 +25,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
+import static net.kravuar.moony.App.ExecutablePath;
 import static net.kravuar.moony.Util.createHelperStage;
 
 public class StorageController implements Initializable {
@@ -125,6 +124,20 @@ public class StorageController implements Initializable {
     void removeCheck() throws SQLException {
         Check delCheck = list.getSelectionModel().getSelectedItem();
         if (delCheck != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            String income = delCheck.isIncome().getValue() ? "Income" : "Expense";
+            alert.setContentText("Are you sure you want to remove this check?\n"
+                    + income + "  -  "
+                    + delCheck.getPrimaryCategory().getValue().getName() + "  -  "
+                    + delCheck.getDate().getValue().toString() + "  -  "
+                    + delCheck.getAmount().toString());
+            alert.setTitle("Warning");
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(new Image("file:" + ExecutablePath + "/assets/Icon.png"));
+            Optional<ButtonType> result =  alert.showAndWait();
+            if (result.get() != ButtonType.OK)
+                return;
+
             Model.removeCheck(delCheck);
             list.getItems().removeIf(check -> check.getId() == delCheck.getId());
             Model.checks.removeIf(check -> check.getId() == delCheck.getId());

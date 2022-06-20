@@ -6,9 +6,6 @@ import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Model {

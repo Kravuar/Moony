@@ -1,6 +1,5 @@
 package net.kravuar.moony;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,12 +10,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.customList.CellFactory;
-import net.kravuar.moony.data.DB_Controller;
 import net.kravuar.moony.data.Model;
 
 import java.io.IOException;
@@ -43,7 +39,8 @@ public class SettingsController implements Initializable {
         Stage stage = createHelperStage(new Scene(parent), pos);
         stage.showAndWait();
         Category category = controller.getCategory();
-
+        if (category == null)
+            return;
 
         if (!isEditMode){
             if (Model.categories.stream().anyMatch(candidate -> candidate.getName().getValue().equals(category.getName().getValue()))){
@@ -70,7 +67,6 @@ public class SettingsController implements Initializable {
     @FXML
     void addCategory() throws IOException, SQLException {
         processChange(false);
-
     }
 
     @FXML

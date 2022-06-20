@@ -5,9 +5,11 @@ import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 
 import java.sql.*;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class DB_Controller {
     // CATEGORIES

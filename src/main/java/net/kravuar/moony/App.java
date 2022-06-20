@@ -18,12 +18,13 @@ public class App extends Application {
     static {
         try {
             URL url = AppLauncher.class.getProtectionDomain().getCodeSource().getLocation();
-            File myfile = new File(url.toURI());
-            ExecutablePath = myfile.getParentFile().getPath();
+            File myFile = new File(url.toURI());
+            ExecutablePath = myFile.getParentFile().getPath();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
+    // for IDE change ExecutablePath to folder with DB and assets(unnecessary)
     private static final String DB_URL = "jdbc:h2:" + ExecutablePath + "\\moony";
     private static final String DB_PASS = "appPass";
     private static final String DB_USERNAME = "moonyUser";

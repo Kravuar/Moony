@@ -7,8 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.IOException;
-import java.lang.reflect.Executable;
 import java.net.URL;
 import java.util.ResourceBundle;
 

@@ -16,13 +16,14 @@ import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.CellFactory;
 import net.kravuar.moony.data.Model;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -167,7 +168,7 @@ public class StatisticsController implements Initializable {
         Stage stage = createHelperStage(new Scene(parent),pos);
         stage.showAndWait();
         Category category = controller.getCategory();
-        if (category != null)
+        if (category != null && !list.getItems().contains(category))
             list.getItems().add(0, category);
     }
     @FXML
