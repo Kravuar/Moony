@@ -2,6 +2,7 @@ package net.kravuar.moony;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,6 +42,7 @@ public class StorageController implements Initializable {
 
     private final ObservableList<Category> filterCategories = FXCollections.observableArrayList();
     private final ListView<Category> filter = new ListView<>();
+    private boolean filterChanged = false;
     private final Popup popup = new Popup();
 
 
@@ -67,7 +69,8 @@ public class StorageController implements Initializable {
         String descriptionFilter = description.getText().toLowerCase();
         if (filterCategories.isEmpty())
             list.setItems(Model.checks.filtered(check -> check.getDescription().toString().toLowerCase().contains(descriptionFilter)));
-        else
+        else if (filterChanged) {
+            filterChanged = false;
             list.setItems(Model.checks.filtered(check -> {
                 boolean descr = check.getDescription().toString().toLowerCase()
                             .contains(descriptionFilter);
@@ -77,6 +80,7 @@ public class StorageController implements Initializable {
                             .containsAll(filterCategories);
                 return descr && categories;
             }));
+        }
     }
 
     @FXML
@@ -130,6 +134,7 @@ public class StorageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        filterCategories.addListener((ListChangeListener.Change<? extends Category> c) -> filterChanged = true);
         list.setCellFactory(new CellFactory<Check,CheckController>("check.fxml"));
         list.setItems(Model.checks);
 

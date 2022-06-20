@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import static net.kravuar.moony.App.ExecutablePath;
 import static net.kravuar.moony.Util.createHelperStage;
 
 public class SettingsController implements Initializable {
@@ -49,7 +50,7 @@ public class SettingsController implements Initializable {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("Category with such name already exists.");
                 Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-                alertStage.getIcons().add(new Image("file:src/main/resources/net/kravuar/moony/assets/Icon.png"));
+                alertStage.getIcons().add(new Image("file:" + ExecutablePath + "/assets/Icon.png"));
                 alertStage.show();
                 return;
             }
@@ -85,7 +86,7 @@ public class SettingsController implements Initializable {
         alert.setContentText("All check with such primary category will be deleted.");
         alert.setTitle("Warning");
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image("file:src/main/resources/net/kravuar/moony/assets/Icon.png"));
+        stage.getIcons().add(new Image("file:" + ExecutablePath + "/assets/Icon.png"));
         Optional<ButtonType> result =  alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             Category category = list.getSelectionModel().getSelectedItem();

@@ -7,9 +7,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import net.kravuar.moony.checks.Category;
@@ -17,17 +16,20 @@ import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.CellFactory;
 import net.kravuar.moony.data.Model;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static java.util.stream.Collectors.toMap;
+import static net.kravuar.moony.App.ExecutablePath;
 import static net.kravuar.moony.Util.createHelperStage;
 
 public class StatisticsController implements Initializable {
@@ -47,6 +49,8 @@ public class StatisticsController implements Initializable {
     private Label totalExpensesLabel;
     @FXML
     private Label totalIncomesLabel;
+    @FXML
+    private TextField fileName;
 
     @FXML
     void refresh() {
@@ -118,7 +122,34 @@ public class StatisticsController implements Initializable {
         expenses.getData().forEach(applyGraphics);
     }
 
-
+    @FXML
+    void createReport() throws IOException {
+        String name = fileName.getText();
+        if (name != null && !name.equals("")) {
+            String path = ExecutablePath + "/" + name + ".txt";
+            if (new File(path).exists()){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("File with such name already exists.");
+                Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+                alertStage.getIcons().add(new Image("file:" + ExecutablePath + "/assets/Icon.png"));
+                alertStage.show();
+                return;
+            }
+            String dateFrom = fromDate.getValue() == null ? "No bottom bound." : fromDate.getValue().toString();
+            String dateTo = toDate.getValue() == null ? "No upper bound." : toDate.getValue().toString();
+            PrintWriter writer = new PrintWriter(path, StandardCharsets.UTF_8);
+            writer.println("///////////////// STATISTICS /////////////////\n\n");
+            writer.println(dateFrom + "   ---   " + dateTo + "\n\n\n");
+            writer.println("Total Expenses = " + totalExpensesLabel.getText());
+            for (PieChart.Data data : expenses.getData())
+                writer.println("\t" + data.getName());
+            writer.println("\n\n\n");
+            writer.println("Total Incomes = " + totalExpensesLabel.getText());
+            for (PieChart.Data data : incomes.getData())
+                writer.println("\t" + data.getName());
+            writer.close();
+        }
+    }
     @FXML
     void addOrRemoveAll() {
         if (list.getItems().isEmpty())
@@ -149,5 +180,10 @@ public class StatisticsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         list.setCellFactory(new CellFactory<Category,CategoryController>("category.fxml"));
+        fileName.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[-_ A-Za-z\\d]+")) {
+                fileName.setText(newValue.replaceAll("[^[-_ A-Za-z\\d]]", ""));
+            }
+        });
     }
 }

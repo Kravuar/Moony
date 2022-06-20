@@ -9,6 +9,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -49,6 +50,22 @@
                   <Insets left="5.0" right="5.0" />
                </padding>
             </JFXButton>
+            <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#createReport" styleClass="add" stylesheets="@styles/button.css" text="Create Report" textFill="#732e83">
+               <graphic>
+                  <MaterialDesignIconView glyphName="FILE" size="24" />
+               </graphic>
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </JFXButton>
+            <TextField fx:id="fileName" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Filename">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
          </children>
       </HBox>
    </top>
