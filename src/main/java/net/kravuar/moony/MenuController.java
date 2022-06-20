@@ -3,10 +3,22 @@ package net.kravuar.moony;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.io.IOException;
+import java.lang.reflect.Executable;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class MenuController {
+import static net.kravuar.moony.App.ExecutablePath;
+
+public class MenuController implements Initializable {
+    @FXML
+    private ImageView image;
+
+
     private MainController mainController;
     private String lastScene;
 
@@ -17,7 +29,7 @@ public class MenuController {
     }
 
     @FXML
-    void changeScene(ActionEvent event) throws IOException {
+    void changeScene(ActionEvent event) {
         JFXButton button = (JFXButton) event.getSource();
         String scene = button.getText().toLowerCase();
         if (!scene.equals(lastScene)) {
@@ -26,8 +38,10 @@ public class MenuController {
         }
     }
 
-    @FXML
-    void settings(){} //most significant - custom categories
-
     public void setMainController(MainController controller){ this.mainController = controller;}
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        image.setImage(new Image("file:" + ExecutablePath + "/assets/Theme.jpg"));
+    }
 }

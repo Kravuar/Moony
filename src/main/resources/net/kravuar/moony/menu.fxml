@@ -4,17 +4,13 @@
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.effect.ColorAdjust?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <VBox maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #93829E;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.kravuar.moony.MenuController">
    <children>
-      <ImageView fitHeight="200.0" fitWidth="210.0" pickOnBounds="true">
-         <image>
-            <Image url="@assets/Theme.jpg" />
-         </image>
+      <ImageView fx:id="image" fitHeight="200.0" fitWidth="210.0" pickOnBounds="true">
          <effect>
             <ColorAdjust brightness="0.14" contrast="-0.09" hue="0.11" saturation="1.0" />
          </effect>

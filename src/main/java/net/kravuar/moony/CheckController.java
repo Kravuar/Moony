@@ -26,6 +26,7 @@ import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+import static net.kravuar.moony.App.ExecutablePath;
 import static net.kravuar.moony.Util.createHelperStage;
 
 public class CheckController implements Settable<Check>, Initializable {
@@ -62,9 +63,9 @@ public class CheckController implements Settable<Check>, Initializable {
                                                                        check.getPrimaryCategory().getValue().getColor()));
 
             if (check.isIncome().getValue())
-                dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Income.png"));
+                dollar.setImage(new Image("file:" + ExecutablePath + "/assets/Income.png"));
             else
-                dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Expence.png"));
+                dollar.setImage(new Image("file:" + ExecutablePath + "/assets/Expense.png"));
 
         }
     }
@@ -81,9 +82,9 @@ public class CheckController implements Settable<Check>, Initializable {
         check.setIncome(!check.isIncome().getValue());
         Model.updateCheck(check,Check.Field.INCOME);
         if (check.isIncome().getValue())
-            dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Income.png"));
+            dollar.setImage(new Image("file:" + ExecutablePath + "/assets/Income.png"));
         else
-            dollar.setImage(new Image("file:src/main/resources/net/kravuar/moony/assets/Expence.png"));
+            dollar.setImage(new Image("file:" + ExecutablePath + "/assets/Expense.png"));
     }
 
     @FXML

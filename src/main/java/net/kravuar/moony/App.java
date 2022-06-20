@@ -6,15 +6,29 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 public class App extends Application {
-
-    private static final String DB_URL = "jdbc:h2:" + System.getProperty("user.dir") + "\\moony";
+    public static final String ExecutablePath;
+    static {
+        try {
+            URL url = AppLauncher.class.getProtectionDomain().getCodeSource().getLocation();
+            File myfile = new File(url.toURI());
+            ExecutablePath = myfile.getParentFile().getPath();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private static final String DB_URL = "jdbc:h2:" + ExecutablePath + "\\moony";
     private static final String DB_PASS = "appPass";
     private static final String DB_USERNAME = "moonyUser";
+
+
 
     public static final Connection connection;
     static { try { connection = DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASS); } catch (SQLException e) { throw new RuntimeException(e); } }
@@ -27,7 +41,7 @@ public class App extends Application {
 
 
         mainController.changeScene("storage");
-        stage.getIcons().add(new Image("file:src/main/resources/net/kravuar/moony/assets/Icon.png"));
+        stage.getIcons().add(new Image("file:" + ExecutablePath + "/assets/Icon.png"));
         stage.setTitle("Moony");
         stage.setScene(scene);
         stage.show();
