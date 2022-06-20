@@ -128,7 +128,7 @@ public class StorageController implements Initializable {
             String income = delCheck.isIncome().getValue() ? "Income" : "Expense";
             alert.setContentText("Are you sure you want to remove this check?\n"
                     + income + "  -  "
-                    + delCheck.getPrimaryCategory().getValue().getName() + "  -  "
+                    + delCheck.getPrimaryCategory().getValue().getName().getValue() + "  -  "
                     + delCheck.getDate().getValue().toString() + "  -  "
                     + delCheck.getAmount().toString());
             alert.setTitle("Warning");
