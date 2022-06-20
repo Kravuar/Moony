@@ -203,7 +203,7 @@ public class DB_Controller {
 
     public static int check_upd_add(Check check) throws SQLException {
         check_upd_add.setDouble(1, check.getAmount().doubleValue());
-        check_upd_add.setString(2, check.getDescription().toString());
+        check_upd_add.setString(2, check.getDescription().getValue());
         check_upd_add.setDate(3, Date.valueOf(check.getDate().getValue()));
         check_upd_add.setBoolean(4, check.isIncome().getValue());
         check_upd_add.setInt(5, check.getPrimaryCategory().getValue().getId().getValue());
