@@ -145,7 +145,7 @@ public class StatisticsController implements Initializable {
             for (PieChart.Data data : expenses.getData())
                 writer.println("\t" + data.getName());
             writer.println("\n\n\n");
-            writer.println("Total Incomes = " + totalExpensesLabel.getText());
+            writer.println("Total Incomes = " + totalIncomesLabel.getText());
             for (PieChart.Data data : incomes.getData())
                 writer.println("\t" + data.getName());
             writer.close();

@@ -130,7 +130,7 @@ public class StorageController implements Initializable {
                     + income + "  -  "
                     + delCheck.getPrimaryCategory().getValue().getName().getValue() + "  -  "
                     + delCheck.getDate().getValue().toString() + "  -  "
-                    + delCheck.getAmount().toString());
+                    + delCheck.getAmount().getValue());
             alert.setTitle("Warning");
             Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
             stage.getIcons().add(new Image("file:" + ExecutablePath + "/assets/Icon.png"));
