@@ -29,7 +29,7 @@
       </Label>
    </top>
    <left>
-      <ListView fx:id="categories" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myList" stylesheets="@styles/check.css" BorderPane.alignment="CENTER">
+      <ListView fx:id="categories" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="Mylist-view" stylesheets="@styles/check.css" BorderPane.alignment="CENTER">
          <contextMenu>
             <ContextMenu>
                <items>

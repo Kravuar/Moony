@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -106,8 +107,7 @@ public class StatisticsController implements Initializable {
                 .map(entry -> new PieChart.Data(entry.getKey().getName().getValue(),entry.getValue()))
                 .toList());
 
-
-        Consumer<PieChart.Data> applyGraphics = nodeData -> {
+        BiConsumer<Double,PieChart.Data> applyGraphics = (total,nodeData) -> {
             String color = Color.web(categories.stream()
                             .filter(category -> category.getName().getValue().equals(nodeData.getName()))
                             .findFirst().get()
@@ -117,10 +117,10 @@ public class StatisticsController implements Initializable {
                     .replace("0x","#");
             nodeData.getNode().setStyle(
                     "-fx-pie-color: " + color.substring(0,color.length() - 2) + ";");
-            nodeData.setName(nodeData.getName() + " " + nodeData.getPieValue());
+            nodeData.setName(nodeData.getName() + " " + nodeData.getPieValue() + "  | " + String.format("%.2f", nodeData.getPieValue() / total * 100) + "%");
         };
-        incomes.getData().forEach(applyGraphics);
-        expenses.getData().forEach(applyGraphics);
+        incomes.getData().forEach(nodeData -> applyGraphics.accept(totalIncomes.get(),nodeData));   // Ugly
+        expenses.getData().forEach(nodeData -> applyGraphics.accept(totalExpenses.get(),nodeData));
     }
 
     @FXML

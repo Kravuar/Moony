@@ -1,14 +1,14 @@
 package net.kravuar.moony.customList;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
-import javafx.scene.layout.Pane;
 import net.kravuar.moony.App;
 
 import java.io.IOException;
 
 public class Cell<T,C extends Settable<T>> extends ListCell<T> {
-    private final Pane pane;
+    private final Parent pane;
     private final C controller;
 
     public Cell(String path){

@@ -19,7 +19,8 @@ public class App extends Application {
         try {
             URL url = AppLauncher.class.getProtectionDomain().getCodeSource().getLocation();
             File myFile = new File(url.toURI());
-            ExecutablePath = myFile.getParentFile().getPath();
+            //ExecutablePath = myFile.getParentFile().getPath();
+            ExecutablePath = "E:\\Balovstvo\\moony";
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }

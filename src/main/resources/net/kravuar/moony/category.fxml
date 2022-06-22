@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="pane" stylesheets="@styles/check.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.kravuar.moony.CategoryController">
-   <children>
-      <Label fx:id="name" styleClass="name" stylesheets="@styles/check.css" text="Label">
-         <graphic>
-            <Rectangle fx:id="rect" arcHeight="5.0" arcWidth="5.0" height="15.0" stroke="BLACK" strokeType="INSIDE" width="15.0" />
-         </graphic>
-      </Label>
-   </children>
-</AnchorPane>
+
+
+<Label fx:id="name" styleClass="name" stylesheets="@styles/check.css" text="Label" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.kravuar.moony.CategoryController">
+   <graphic>
+      <Rectangle fx:id="rect" arcHeight="5.0" arcWidth="5.0" height="15.0" stroke="BLACK" strokeType="INSIDE" width="15.0" />
+   </graphic>
+</Label>
