@@ -1,4 +1,4 @@
-package net.kravuar.moony;
+package net.kravuar.moony.objects;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -13,6 +13,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import net.kravuar.moony.util.AddCheckCategoryController;
+import net.kravuar.moony.util.Util;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.CellFactory;
@@ -25,7 +27,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import static net.kravuar.moony.App.ExecutablePath;
-import static net.kravuar.moony.Util.createHelperStage;
+import static net.kravuar.moony.util.Util.createHelperStage;
 
 public class CheckController implements Settable<Check>, Initializable {
     @FXML
@@ -87,7 +89,7 @@ public class CheckController implements Settable<Check>, Initializable {
 
     @FXML
     void addCategory() throws IOException, SQLException {
-        FXMLLoader loader = Util.getLoader("addCheckCategory.fxml");
+        FXMLLoader loader = Util.getLoader("addCheckCategory.fxml", AddCheckCategoryController.class);
         Parent parent = loader.load();
         AddCheckCategoryController controller = loader.getController();
         var pos = categories.localToScreen(0.0,0.0);
@@ -112,7 +114,7 @@ public class CheckController implements Settable<Check>, Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        categories.setCellFactory(new CellFactory<Category, CategoryController>("category.fxml"));
+        categories.setCellFactory(new CellFactory<>("category.fxml", CategoryController.class));
         description.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
                 try { check.setDescription(description.getText()); Model.updateCheck(check, Check.Field.DESCRIPTION); }

@@ -1,4 +1,4 @@
-package net.kravuar.moony;
+package net.kravuar.moony.scenes;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +11,9 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import net.kravuar.moony.util.AddCheckCategoryController;
+import net.kravuar.moony.objects.CategoryController;
+import net.kravuar.moony.util.Util;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.CellFactory;
@@ -27,12 +30,11 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static java.util.stream.Collectors.toMap;
 import static net.kravuar.moony.App.ExecutablePath;
-import static net.kravuar.moony.Util.createHelperStage;
+import static net.kravuar.moony.util.Util.createHelperStage;
 
 public class StatisticsController implements Initializable {
 
@@ -149,6 +151,11 @@ public class StatisticsController implements Initializable {
             for (PieChart.Data data : incomes.getData())
                 writer.println("\t" + data.getName());
             writer.close();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Report successfully created in app folder.");
+            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.getIcons().add(new Image("file:" + ExecutablePath + "/assets/Icon.png"));
+            alertStage.show();
         }
     }
     @FXML
@@ -160,7 +167,7 @@ public class StatisticsController implements Initializable {
     }
     @FXML
     void addCategory() throws IOException {
-        FXMLLoader loader = Util.getLoader("addCheckCategory.fxml");
+        FXMLLoader loader = Util.getLoader("addCheckCategory.fxml", AddCheckCategoryController.class);
         Parent parent = loader.load();
         AddCheckCategoryController controller = loader.getController();
         var pos = list.localToScreen(0.0,0.0);
@@ -180,7 +187,7 @@ public class StatisticsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        list.setCellFactory(new CellFactory<Category,CategoryController>("category.fxml"));
+        list.setCellFactory(new CellFactory<>("category.fxml", CategoryController.class));
         fileName.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("[-_ A-Za-z\\d]+")) {
                 fileName.setText(newValue.replaceAll("[^[-_ A-Za-z\\d]]", ""));

@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import net.kravuar.moony.main.MainController;
+import net.kravuar.moony.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +38,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader mainLoader = Util.getLoader("main.fxml");
+        FXMLLoader mainLoader = Util.getLoader("main.fxml", MainController.class);
         Scene scene = new Scene(mainLoader.load());
         MainController mainController = mainLoader.getController();
 

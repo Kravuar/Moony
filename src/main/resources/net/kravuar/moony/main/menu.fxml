@@ -7,14 +7,14 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<VBox maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #93829E;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.kravuar.moony.MenuController">
+<VBox maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #93829E;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.kravuar.moony.main.MenuController">
    <children>
       <ImageView fx:id="image" fitHeight="200.0" fitWidth="210.0" pickOnBounds="true">
          <effect>
             <ColorAdjust brightness="0.14" contrast="-0.09" hue="0.11" saturation="1.0" />
          </effect>
       </ImageView>
-      <JFXButton accessibleText="STORAGE" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#changeScene" styleClass="storage" stylesheets="@styles/menu.css" text="STORAGE" textFill="#503c54">
+      <JFXButton accessibleText="STORAGE" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#changeScene" styleClass="storage" stylesheets="@../styles/menu.css" text="STORAGE" textFill="#503c54">
          <VBox.margin>
             <Insets />
          </VBox.margin>
@@ -25,7 +25,7 @@
             <MaterialDesignIconView glyphName="ARCHIVE" />
          </graphic>
       </JFXButton>
-      <JFXButton accessibleText="STATISTICS" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#changeScene" styleClass="statistics" stylesheets="@styles/menu.css" text="STATISTICS" textFill="#503c54">
+      <JFXButton accessibleText="STATISTICS" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#changeScene" styleClass="statistics" stylesheets="@../styles/menu.css" text="STATISTICS" textFill="#503c54">
          <VBox.margin>
             <Insets />
          </VBox.margin>
@@ -36,7 +36,7 @@
             <MaterialDesignIconView glyphName="CHART_BAR" />
          </graphic>
       </JFXButton>
-      <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#changeScene" styleClass="settings" stylesheets="@styles/menu.css" text="SETTINGS" textFill="#503c54">
+      <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#changeScene" styleClass="settings" stylesheets="@../styles/menu.css" text="SETTINGS" textFill="#503c54">
          <font>
             <Font size="28.0" />
          </font>
@@ -44,7 +44,7 @@
             <MaterialDesignIconView glyphName="SETTINGS" />
          </graphic>
       </JFXButton>
-      <JFXButton accessibleText="EXIT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#exit" styleClass="exit" stylesheets="@styles/menu.css" text="EXIT" textFill="#503c54">
+      <JFXButton accessibleText="EXIT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#exit" styleClass="exit" stylesheets="@../styles/menu.css" text="EXIT" textFill="#503c54">
          <VBox.margin>
             <Insets />
          </VBox.margin>

@@ -1,4 +1,4 @@
-package net.kravuar.moony;
+package net.kravuar.moony.util;
 
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -22,7 +22,7 @@ public class Util {
         });
         return stage;
     }
-    public static FXMLLoader getLoader(String fxml) {
-        return new FXMLLoader(App.class.getResource(fxml));
+    public static FXMLLoader getLoader(String fxml, Class controller) {
+        return new FXMLLoader(controller.getResource(fxml));
     }
 }

@@ -1,4 +1,4 @@
-package net.kravuar.moony;
+package net.kravuar.moony.objects;
 
 
 import javafx.beans.binding.Bindings;

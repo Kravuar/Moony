@@ -1,4 +1,4 @@
-package net.kravuar.moony;
+package net.kravuar.moony.main;
 
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -12,6 +12,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import net.kravuar.moony.util.Util;
+import net.kravuar.moony.scenes.SettingsController;
+import net.kravuar.moony.scenes.StatisticsController;
+import net.kravuar.moony.scenes.StorageController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -47,10 +51,10 @@ public class MainController implements Initializable {
         scenes = new HashMap<>();
         VBox box;
         try {
-            scenes.put("storage", Util.getLoader("storage.fxml").load());
-            scenes.put("statistics", Util.getLoader("statistics.fxml").load());
-            scenes.put("settings", Util.getLoader("settings.fxml").load());
-            FXMLLoader menuLoader = Util.getLoader("menu.fxml");
+            scenes.put("storage", Util.getLoader("storage.fxml", StorageController.class).load());
+            scenes.put("statistics", Util.getLoader("statistics.fxml", StatisticsController.class).load());
+            scenes.put("settings", Util.getLoader("settings.fxml", SettingsController.class).load());
+            FXMLLoader menuLoader = Util.getLoader("menu.fxml", MenuController.class);
             box = menuLoader.load();
             MenuController menuController = menuLoader.getController();
             menuController.setMainController(this);

@@ -14,9 +14,9 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #F1E7F3;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.kravuar.moony.CheckController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #F1E7F3;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.kravuar.moony.objects.CheckController">
    <top>
-      <Label fx:id="primaryCategory" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="category" stylesheets="@styles/check.css" textFill="WHITE" BorderPane.alignment="CENTER">
+      <Label fx:id="primaryCategory" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="category" stylesheets="@../styles/check.css" textFill="WHITE" BorderPane.alignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
@@ -29,7 +29,7 @@
       </Label>
    </top>
    <left>
-      <ListView fx:id="categories" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="Mylist-view" stylesheets="@styles/check.css" BorderPane.alignment="CENTER">
+      <ListView fx:id="categories" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="Mylist-view" stylesheets="@../styles/check.css" BorderPane.alignment="CENTER">
          <contextMenu>
             <ContextMenu>
                <items>
@@ -41,14 +41,14 @@
          </contextMenu></ListView>
    </left>
    <right>
-      <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="box" stylesheets="@styles/check.css" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="box" stylesheets="@../styles/check.css" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" stylesheets="@styles/check.css" text="Amount">
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" stylesheets="@../styles/check.css" text="Amount">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="amount" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #FFF;" styleClass="text" stylesheets="@styles/check.css">
+            <TextField fx:id="amount" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #FFF;" styleClass="text" stylesheets="@../styles/check.css">
                <VBox.margin>
                   <Insets bottom="50.0" />
                </VBox.margin>
@@ -56,17 +56,17 @@
                   <Font size="18.0" />
                </font>
             </TextField>
-            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" stylesheets="@styles/check.css" text="Date">
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" stylesheets="@../styles/check.css" text="Date">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <DatePicker fx:id="date" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" stylesheets="@styles/check.css">
+            <DatePicker fx:id="date" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" stylesheets="@../styles/check.css">
                <VBox.margin>
                   <Insets bottom="50.0" />
                </VBox.margin>
             </DatePicker>
-            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" stylesheets="@styles/check.css" text="Income/Expense">
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" stylesheets="@../styles/check.css" text="Income/Expense">
                <font>
                   <Font size="18.0" />
                </font>
@@ -78,14 +78,14 @@
    <center>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
          <top>
-            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" stylesheets="@styles/check.css" text="Description" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myLabel" stylesheets="@../styles/check.css" text="Description" BorderPane.alignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
          </top>
          <center>
-            <TextArea fx:id="description" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="text" stylesheets="@styles/check.css" BorderPane.alignment="CENTER" />
+            <TextArea fx:id="description" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="text" stylesheets="@../styles/check.css" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </center>

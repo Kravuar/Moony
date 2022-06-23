@@ -1,4 +1,4 @@
-package net.kravuar.moony;
+package net.kravuar.moony.main;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;

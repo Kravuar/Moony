@@ -1,4 +1,4 @@
-package net.kravuar.moony;
+package net.kravuar.moony.scenes;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
@@ -14,6 +14,10 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import net.kravuar.moony.util.AddCheckCategoryController;
+import net.kravuar.moony.objects.CategoryController;
+import net.kravuar.moony.objects.CheckController;
+import net.kravuar.moony.util.Util;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.CellFactory;
@@ -26,7 +30,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static net.kravuar.moony.App.ExecutablePath;
-import static net.kravuar.moony.Util.createHelperStage;
+import static net.kravuar.moony.util.Util.createHelperStage;
 
 public class StorageController implements Initializable {
     @FXML
@@ -46,7 +50,7 @@ public class StorageController implements Initializable {
 
 
     private void addToFilter() throws IOException {
-        FXMLLoader loader = Util.getLoader("addCheckCategory.fxml");
+        FXMLLoader loader = Util.getLoader("addCheckCategory.fxml", AddCheckCategoryController.class);
         Parent parent = loader.load();
         AddCheckCategoryController controller = loader.getController();
         var pos = filterButton.localToScreen(0.0,0.0);
@@ -84,7 +88,7 @@ public class StorageController implements Initializable {
 
     @FXML
     void addCheck() throws SQLException, IOException {
-        FXMLLoader loader = Util.getLoader("addCheckCategory.fxml");
+        FXMLLoader loader = Util.getLoader("addCheckCategory.fxml", AddCheckCategoryController.class);
         Parent parent = loader.load();
         AddCheckCategoryController controller = loader.getController();
         var pos = addButton.localToScreen(0.0,0.0);
@@ -135,7 +139,7 @@ public class StorageController implements Initializable {
             Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
             stage.getIcons().add(new Image("file:" + ExecutablePath + "/assets/Icon.png"));
             Optional<ButtonType> result =  alert.showAndWait();
-            if (result.get() != ButtonType.OK)
+            if (result.isPresent() && result.get() != ButtonType.OK)
                 return;
 
             Model.removeCheck(delCheck);
@@ -148,10 +152,10 @@ public class StorageController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         filterCategories.addListener((ListChangeListener.Change<? extends Category> c) -> filterChanged = true);
-        list.setCellFactory(new CellFactory<Check,CheckController>("check.fxml"));
+        list.setCellFactory(new CellFactory<>("check.fxml", CheckController.class));
         list.setItems(Model.checks);
 
-        filter.setCellFactory(new CellFactory<Category, CategoryController>("category.fxml"));
+        filter.setCellFactory(new CellFactory<>("category.fxml", CategoryController.class));
         filter.setMaxHeight(250);
         ContextMenu menu = new ContextMenu();
         MenuItem add = new MenuItem();

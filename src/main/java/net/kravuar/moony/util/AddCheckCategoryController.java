@@ -1,4 +1,4 @@
-package net.kravuar.moony;
+package net.kravuar.moony.util;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.customList.CellFactory;
 import net.kravuar.moony.data.Model;
+import net.kravuar.moony.objects.CategoryController;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -29,7 +30,7 @@ public class AddCheckCategoryController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        list.setCellFactory(new CellFactory<Category,CategoryController>("category.fxml"));
+        list.setCellFactory(new CellFactory<>("category.fxml", CategoryController.class));
         list.setItems(Model.categories);
         list.setOnMouseClicked(mouseEvent -> {
             if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){

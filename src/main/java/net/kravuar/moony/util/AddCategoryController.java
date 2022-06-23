@@ -1,4 +1,4 @@
-package net.kravuar.moony;
+package net.kravuar.moony.util;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,8 +7,6 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import net.kravuar.moony.checks.Category;
-
-import java.sql.SQLException;
 
 public class AddCategoryController {
     @FXML
@@ -20,7 +18,7 @@ public class AddCategoryController {
     private Category category;
 
     @FXML
-    void add(ActionEvent event) throws SQLException {
+    void add(ActionEvent event) {
         String cname = name.getText();
         String cColor = color.getValue().toString();
         category = new Category(cname,cColor, -1);

@@ -1,4 +1,4 @@
-package net.kravuar.moony;
+package net.kravuar.moony.scenes;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +11,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import net.kravuar.moony.util.AddCategoryController;
+import net.kravuar.moony.objects.CategoryController;
+import net.kravuar.moony.util.Util;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.customList.CellFactory;
 import net.kravuar.moony.data.Model;
@@ -22,7 +25,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static net.kravuar.moony.App.ExecutablePath;
-import static net.kravuar.moony.Util.createHelperStage;
+import static net.kravuar.moony.util.Util.createHelperStage;
 
 public class SettingsController implements Initializable {
     @FXML
@@ -31,7 +34,7 @@ public class SettingsController implements Initializable {
 
 
     private void processChange(boolean isEditMode) throws IOException, SQLException {
-        FXMLLoader loader = Util.getLoader("addCategory.fxml");
+        FXMLLoader loader = Util.getLoader("addCategory.fxml", AddCategoryController.class);
         Parent parent = loader.load();
         AddCategoryController controller = loader.getController();
         var pos = list.localToScreen(0.0,0.0);
@@ -84,7 +87,7 @@ public class SettingsController implements Initializable {
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("file:" + ExecutablePath + "/assets/Icon.png"));
         Optional<ButtonType> result =  alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             Category category = list.getSelectionModel().getSelectedItem();
             if (category != null) {
                 Model.removeCategory(category);
@@ -95,7 +98,7 @@ public class SettingsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        list.setCellFactory(new CellFactory<Category,CategoryController>("category.fxml"));
+        list.setCellFactory(new CellFactory<>("category.fxml", CategoryController.class));
         list.setItems(Model.categories);
     }
 }
