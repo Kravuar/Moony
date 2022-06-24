@@ -58,9 +58,9 @@ public class CheckController implements Settable<Check>, Initializable {
             categories.setItems(check.getCategories());
 
             primaryCategory.textProperty().bind(Bindings.createStringBinding(() -> check.getPrimaryCategory().getValue().getName().getValue(),
-                                                                             check.getPrimaryCategory().getValue().getName()));
+                                                                             check.getPrimaryCategory()));
             primeRect.fillProperty().bind(Bindings.createObjectBinding(() -> Color.valueOf(check.getPrimaryCategory().getValue().getColor().getValue()),
-                                                                       check.getPrimaryCategory().getValue().getColor()));
+                                                                       check.getPrimaryCategory()));
 
             if (check.isIncome().getValue())
                 dollar.setImage(new Image("file:" + ExecutablePath + "/assets/Income.png"));
@@ -73,6 +73,8 @@ public class CheckController implements Settable<Check>, Initializable {
     @FXML
     void setAsPrimary() throws SQLException {
         Category newPrimary = categories.getSelectionModel().getSelectedItem();
+        if (newPrimary == null)
+            return;
         check.setPrimaryCategory(newPrimary);
         Model.updateCheck(check, Check.Field.PRIMARY);
     }
