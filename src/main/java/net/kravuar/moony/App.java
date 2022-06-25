@@ -19,9 +19,9 @@ public class App extends Application {
     public static final String ExecutablePath;
     static {
         try {
+            System.setProperty("javafx.sg.warn", "true"); // some JDK joke
             URL url = AppLauncher.class.getProtectionDomain().getCodeSource().getLocation();
             File myFile = new File(url.toURI());
-
             //ExecutablePath = myFile.getParentFile().getPath();
             ExecutablePath = "E:\\Balovstvo\\moony";
         } catch (URISyntaxException e) {

@@ -11,12 +11,12 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import net.kravuar.moony.util.AddCategoryController;
-import net.kravuar.moony.objects.CategoryController;
-import net.kravuar.moony.util.Util;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.customList.CellFactory;
 import net.kravuar.moony.data.Model;
+import net.kravuar.moony.objects.CategoryController;
+import net.kravuar.moony.util.AddCategoryController;
+import net.kravuar.moony.util.Util;
 
 import java.io.IOException;
 import java.net.URL;

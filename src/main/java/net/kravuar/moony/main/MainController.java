@@ -12,10 +12,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import net.kravuar.moony.util.Util;
 import net.kravuar.moony.scenes.SettingsController;
 import net.kravuar.moony.scenes.StatisticsController;
 import net.kravuar.moony.scenes.StorageController;
+import net.kravuar.moony.util.Util;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,10 +37,10 @@ public class MainController implements Initializable {
     public void changeScene(String sceneName) {
         Pane root = scenes.get(sceneName);
         if (root != null) {
-        pane.getChildren().removeAll();
-        pane.getChildren().setAll(root);
-        root.prefWidthProperty().bind(pane.widthProperty());
-        root.prefHeightProperty().bind(pane.heightProperty());
+            pane.getChildren().removeAll();
+            pane.getChildren().setAll(root);
+            root.prefWidthProperty().bind(pane.widthProperty());
+            root.prefHeightProperty().bind(pane.heightProperty());
         }
     }
 

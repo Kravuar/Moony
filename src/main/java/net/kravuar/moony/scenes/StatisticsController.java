@@ -11,13 +11,14 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import net.kravuar.moony.util.AddCheckCategoryController;
-import net.kravuar.moony.objects.CategoryController;
-import net.kravuar.moony.util.Util;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.CellFactory;
 import net.kravuar.moony.data.Model;
+import net.kravuar.moony.objects.CategoryController;
+import net.kravuar.moony.util.AddCheckCategoryController;
+import net.kravuar.moony.util.CheckFilter;
+import net.kravuar.moony.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,20 +64,21 @@ public class StatisticsController implements Initializable {
         List<Category> categories = list.getItems().stream().toList();
         if (categories.isEmpty())
             return;
-        LocalDate from = fromDate.getValue(); LocalDate to = toDate.getValue();
-        if (from == null)
-            from = LocalDate.MIN;
-        if (to == null)
-            to = LocalDate.MAX;
 
-        LocalDate finalFrom = from;
-        LocalDate finalTo = to;
-        List<Check> data = Model.checks.stream().filter(check -> {
-            LocalDate checkDate = check.getDate().getValue();
-            return checkDate.isAfter(finalFrom)
-                    && checkDate.isBefore(finalTo)
-                    && categories.stream().anyMatch(category -> check.getPrimaryCategory().getValue().equals(category));
-        }).toList();
+        LocalDate from = fromDate.getValue();
+        LocalDate to = toDate.getValue();
+
+        Util.Filter<Check> filter = new CheckFilter();
+        if (from != null || to != null) {
+            if (from == null)
+                from = LocalDate.MIN;
+            if (to == null)
+                to = LocalDate.MAX;
+            filter = new CheckFilter.byDate(filter,from, to);
+        }
+        filter = new CheckFilter.byPrimary(filter, categories);
+        List<Check> data = Model.checks.filtered(filter::processFilter);
+
 
         Map<Category, Double> incomesData = categories.stream()
                 .collect(toMap(Function.identity(), c -> 0.0));

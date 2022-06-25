@@ -2,15 +2,11 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
 <BorderPane minHeight="300.0" minWidth="400.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.kravuar.moony.scenes.StorageController">
    <top>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #E5E5E5;" BorderPane.alignment="CENTER">
@@ -57,10 +53,7 @@
                   <MaterialDesignIconView glyphName="MINUS" />
                </graphic>
             </JFXButton>
-            <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#findCheck" styleClass="find" stylesheets="@../styles/button.css" text="Find" textFill="#732e83">
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin>
+            <JFXButton fx:id="filterButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#filterPopup" styleClass="find" stylesheets="@../styles/button.css" text="Filter" textFill="#732e83">
                <padding>
                   <Insets left="5.0" right="5.0" />
                </padding>
@@ -69,25 +62,6 @@
                </font>
                <graphic>
                   <MaterialDesignIconView glyphName="FILE_FIND" />
-               </graphic>
-            </JFXButton>
-            <TextField fx:id="description" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Description">
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </TextField>
-            <JFXButton fx:id="filterButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#filterPopup" text="Filter by categories" textFill="#732e83">
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets left="5.0" right="5.0" />
-               </padding>
-               <font>
-                  <Font size="20.0" />
-               </font>
-               <graphic>
-                  <MaterialDesignIconView glyphName="FORMAT_LIST_BULLETED" />
                </graphic>
             </JFXButton>
          </children>

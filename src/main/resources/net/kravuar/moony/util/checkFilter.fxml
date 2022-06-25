@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<VBox maxHeight="1.7976931348623157E308" maxWidth="200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.kravuar.moony.util.CheckFilterController">
+   <children>
+      <TextField fx:id="FilterDescription" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Description">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </TextField>
+      <JFXButton fx:id="FilterCategories" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#categoriesPopup" styleClass="add" stylesheets="@../styles/button.css" text="Categories" textFill="#732e83">
+         <padding>
+            <Insets left="5.0" right="5.0" />
+         </padding>
+         <font>
+            <Font size="20.0" />
+         </font>
+         <graphic>
+            <MaterialDesignIconView glyphName="FORMAT_LIST_BULLETED" />
+         </graphic>
+      </JFXButton>
+      <DatePicker fx:id="FilterFrom" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="From" />
+      <DatePicker fx:id="FilterTo" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="To" />
+   </children>
+</VBox>

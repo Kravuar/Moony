@@ -1,33 +1,35 @@
 package net.kravuar.moony.scenes;
 
 import com.jfoenix.controls.JFXButton;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import net.kravuar.moony.util.AddCheckCategoryController;
-import net.kravuar.moony.objects.CategoryController;
-import net.kravuar.moony.objects.CheckController;
-import net.kravuar.moony.util.Util;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.CellFactory;
 import net.kravuar.moony.data.Model;
+import net.kravuar.moony.objects.CheckController;
+import net.kravuar.moony.util.AddCheckCategoryController;
+import net.kravuar.moony.util.CheckFilter;
+import net.kravuar.moony.util.CheckFilterController;
+import net.kravuar.moony.util.Util;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 import static net.kravuar.moony.App.ExecutablePath;
 import static net.kravuar.moony.util.Util.createHelperStage;
@@ -36,54 +38,38 @@ public class StorageController implements Initializable {
     @FXML
     private ListView<Check> list;
     @FXML
-    private TextField description;
-    @FXML
     private JFXButton filterButton;
     @FXML
     private JFXButton addButton;
 
-
-    private final ObservableList<Category> filterCategories = FXCollections.observableArrayList();
-    private final ListView<Category> filter = new ListView<>();
-    private boolean filterChanged = false;
     private final Popup popup = new Popup();
+    CheckFilterController filterController;
 
-
-    private void addToFilter() throws IOException {
-        FXMLLoader loader = Util.getLoader("addCheckCategory.fxml", AddCheckCategoryController.class);
-        Parent parent = loader.load();
-        AddCheckCategoryController controller = loader.getController();
-        var pos = filterButton.localToScreen(0.0,0.0);
-        pos = pos.add(new Point2D(filterButton.getWidth(),filterButton.getHeight()));
-        Stage stage = createHelperStage(new Scene(parent), pos);
-        stage.showAndWait();
-        Category category = controller.getCategory();
-        if (category != null)
-            filterCategories.add(category);
-    }
-    private void removeFromFilter(Category category) {
-        if (category != null)
-            filterCategories.remove(category);
-    }
-    private void removeAllFromFilter() {
-        filterCategories.clear();
-    }
     private void processFilter(){
-        String descriptionFilter = description.getText().toLowerCase();
-        if (filterCategories.isEmpty())
-            list.setItems(Model.checks.filtered(check -> check.getDescription().toString().toLowerCase().contains(descriptionFilter)));
-        else if (filterChanged) {
-            filterChanged = false;
-            list.setItems(Model.checks.filtered(check -> {
-                boolean descr = check.getDescription().toString().toLowerCase()
-                            .contains(descriptionFilter);
-                List<Category> allCategories = new ArrayList<>(check.getCategories().stream().toList());
-                allCategories.add(check.getPrimaryCategory().getValue());
-                boolean categories = new HashSet<>(allCategories)
-                            .containsAll(filterCategories);
-                return descr && categories;
-            }));
+        String descriptionFilter = filterController.getDescription().toLowerCase();
+        List<Category> categories = filterController.getCategories();
+        LocalDate from = filterController.getDateFrom();
+        LocalDate to = filterController.getDateTo();
+
+        if (descriptionFilter.equals("") && categories.isEmpty() && from == null && to == null)
+            list.setItems(Model.checks);
+
+
+
+        Util.Filter<Check> filter = new CheckFilter();
+        if (from != null || to != null) {
+            if (from == null)
+                from = LocalDate.MIN;
+            if (to == null)
+                to = LocalDate.MAX;
+            filter = new CheckFilter.byDate(filter,from, to);
         }
+        if (!descriptionFilter.equals(""))
+            filter = new CheckFilter.byDescription(filter,descriptionFilter);
+        if (!categories.isEmpty())
+            filter = new CheckFilter.byCategories(filter,categories);
+
+        list.setItems(Model.checks.filtered(filter::processFilter));
     }
 
     @FXML
@@ -107,15 +93,9 @@ public class StorageController implements Initializable {
     }
 
     @FXML
-    void findCheck() {
-        processFilter();
-    }
-
-    @FXML
     void filterPopup() {
         if(!popup.isShowing()){
             var point = filterButton.localToScreen(0.0 , 0.0);
-            filter.setPrefWidth(filterButton.getWidth());
             popup.show(filterButton, point.getX(), point.getY() + filterButton.getHeight());
         }
         else {
@@ -151,29 +131,13 @@ public class StorageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        filterCategories.addListener((ListChangeListener.Change<? extends Category> c) -> filterChanged = true);
         list.setCellFactory(new CellFactory<>("check.fxml", CheckController.class));
         list.setItems(Model.checks);
 
-        filter.setCellFactory(new CellFactory<>("category.fxml", CategoryController.class));
-        filter.setMaxHeight(250);
-        ContextMenu menu = new ContextMenu();
-        MenuItem add = new MenuItem();
-        MenuItem remove = new MenuItem();
-        MenuItem removeAll = new MenuItem();
-        add.setText("Add");
-        add.setOnAction(event -> { try { addToFilter(); }
-                                    catch (IOException e) {throw new RuntimeException(e);}
-        });
-        remove.setText("Remove");
-        remove.setOnAction(event -> removeFromFilter(filter.getSelectionModel().getSelectedItem()));
-        removeAll.setText("Remove All");
-        removeAll.setOnAction(event -> removeAllFromFilter());
-        menu.getItems().addAll(add,remove,removeAll);
-        filter.setContextMenu(menu);
-        filter.setItems(filterCategories);
-
-        popup.getContent().add(filter);
+        FXMLLoader loader = Util.getLoader("checkFilter.fxml", CheckFilterController.class);
+        try { popup.getContent().add(loader.load()); }
+        catch (IOException e) { throw new RuntimeException(e); }
+        filterController = loader.getController();
     }
 
 

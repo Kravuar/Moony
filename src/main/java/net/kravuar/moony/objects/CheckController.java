@@ -13,13 +13,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import net.kravuar.moony.util.AddCheckCategoryController;
-import net.kravuar.moony.util.Util;
 import net.kravuar.moony.checks.Category;
 import net.kravuar.moony.checks.Check;
 import net.kravuar.moony.customList.CellFactory;
 import net.kravuar.moony.customList.Settable;
 import net.kravuar.moony.data.Model;
+import net.kravuar.moony.util.AddCheckCategoryController;
+import net.kravuar.moony.util.Util;
 
 import java.io.IOException;
 import java.net.URL;
@@ -108,7 +108,7 @@ public class CheckController implements Settable<Check>, Initializable {
     @FXML
     void removeCategory() throws SQLException {
         Category category = categories.getSelectionModel().getSelectedItem();
-        if (category != null) {
+        if (category != null && !category.equals(check.getPrimaryCategory().getValue())) {
             check.getCategories().removeIf(candidate -> candidate.equals(category));
             Model.updateCheck(check, Check.Field.CATEGORIES);
         }

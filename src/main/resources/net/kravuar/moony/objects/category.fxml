@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.shape.Rectangle?>
-
 <Label fx:id="name" text="Label" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.kravuar.moony.objects.CategoryController">
    <graphic>
       <Rectangle fx:id="rect" arcHeight="5.0" arcWidth="5.0" height="15.0" stroke="BLACK" strokeType="INSIDE" width="15.0" />

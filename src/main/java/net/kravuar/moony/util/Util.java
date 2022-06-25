@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import static net.kravuar.moony.App.ExecutablePath;
 
-public class Util {
+abstract public class Util {
     public static Stage createHelperStage(Scene scene, Point2D at){
         Stage stage = new Stage();
         stage.setResizable(false);
@@ -24,5 +24,10 @@ public class Util {
     }
     public static FXMLLoader getLoader(String fxml, Class controller) {
         return new FXMLLoader(controller.getResource(fxml));
+    }
+
+
+    public interface Filter<T> {
+        boolean processFilter(final T obj);
     }
 }
