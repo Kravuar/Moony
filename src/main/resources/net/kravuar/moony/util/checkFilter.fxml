@@ -4,13 +4,9 @@
 <?import com.jfoenix.controls.JFXToggleButton?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
 <VBox maxHeight="1.7976931348623157E308" maxWidth="200.0" style="-fx-background-color: #E5E5E5;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.kravuar.moony.util.CheckFilterController">
    <children>
       <TextField fx:id="FilterDescription" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Description">
@@ -20,6 +16,12 @@
       </TextField>
       <DatePicker fx:id="FilterFrom" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="From" />
       <DatePicker fx:id="FilterTo" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="To" />
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+         <children>
+            <TextField fx:id="minAmount" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Min amount" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="maxAmount" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Max amout" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
       <BorderPane>
          <left>
             <JFXToggleButton fx:id="FilterIncome" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Only incomes" toggleColor="#732e83" toggleLineColor="#a66bb5" BorderPane.alignment="CENTER">

@@ -38,6 +38,11 @@ public class CheckFilterController implements Initializable {
     @FXML
     private JFXToggleButton FilterExpense;
     @FXML
+    private TextField maxAmount;
+    @FXML
+    private TextField minAmount;
+
+    @FXML
     private ToggleGroup OperationType;
 
     private final ObservableList<Category> categories = FXCollections.observableArrayList();
@@ -81,9 +86,34 @@ public class CheckFilterController implements Initializable {
     public LocalDate getDateTo(){ return FilterTo.getValue();}
     public boolean getIncome(){ return FilterIncome.isSelected();}
     public boolean getExpense(){ return FilterExpense.isSelected();}
+    public double getMinAmount(){
+        String amount = minAmount.getText();
+        if (amount != null)
+            return Double.parseDouble(amount);
+        else
+            return -1;
+    }
+    public double getMaxAmount(){
+        String amount = maxAmount.getText();
+        if (amount != null)
+            return Double.parseDouble(amount);
+        else
+            return -1;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        minAmount.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*[.]?\\d*")) {
+                minAmount.setText(newValue.replaceAll("[^\\d.]", ""));
+            }
+        });
+        maxAmount.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*[.]?\\d*")) {
+                maxAmount.setText(newValue.replaceAll("[^\\d.]", ""));
+            }
+        });
+
         categoriesList.setCellFactory(new CellFactory<>("category.fxml", CategoryController.class));
         categoriesList.setMaxHeight(250);
         categoriesList.setStyle("-fx-background-color: #f5f5f5;");

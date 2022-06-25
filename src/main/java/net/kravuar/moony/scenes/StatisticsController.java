@@ -69,13 +69,10 @@ public class StatisticsController implements Initializable {
         LocalDate to = toDate.getValue();
 
         Util.Filter<Check> filter = new CheckFilter();
-        if (from != null || to != null) {
-            if (from == null)
-                from = LocalDate.MIN;
-            if (to == null)
-                to = LocalDate.MAX;
-            filter = new CheckFilter.byDate(filter,from, to);
-        }
+        if (from != null)
+            filter = new CheckFilter.byDateAfter(filter,from);
+        if (to != null)
+            filter = new CheckFilter.byDateBefore(filter,to);
         filter = new CheckFilter.byPrimary(filter, categories);
         List<Check> data = Model.checks.filtered(filter::processFilter);
 

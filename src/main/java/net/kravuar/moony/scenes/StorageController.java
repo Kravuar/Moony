@@ -52,8 +52,14 @@ public class StorageController implements Initializable {
         LocalDate to = filterController.getDateTo();
         boolean income = filterController.getIncome();
         boolean expense = filterController.getExpense();
+        double minAmount = filterController.getMinAmount();
+        double maxAmount = filterController.getMaxAmount();
 
-        if (descriptionFilter.equals("") && categories.isEmpty() && from == null && to == null && income == expense)
+        if (descriptionFilter.equals("")
+                && categories.isEmpty()
+                && from == null && to == null
+                && income == expense
+                && minAmount == -1 && maxAmount == -1)
             list.setItems(Model.checks);
 
 
@@ -61,13 +67,14 @@ public class StorageController implements Initializable {
         Util.Filter<Check> filter = new CheckFilter();
         if (income != expense)
             filter = new CheckFilter.byIncome(filter, income);
-        if (from != null || to != null) {
-            if (from == null)
-                from = LocalDate.MIN;
-            if (to == null)
-                to = LocalDate.MAX;
-            filter = new CheckFilter.byDate(filter,from, to);
-        }
+        if (minAmount != -1)
+            filter = new CheckFilter.byAmountHigher(filter,minAmount);
+        if (maxAmount != -1)
+            filter = new CheckFilter.byAmountLower(filter,maxAmount);
+        if (from != null)
+            filter = new CheckFilter.byDateAfter(filter,from);
+        if (to != null)
+            filter = new CheckFilter.byDateBefore(filter,to);
         if (!descriptionFilter.equals(""))
             filter = new CheckFilter.byDescription(filter,descriptionFilter);
         if (!categories.isEmpty())

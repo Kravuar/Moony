@@ -39,19 +39,29 @@ public class CheckFilter implements Util.Filter<Check>{
                     && inner.processFilter(obj);
         }
     }
-    public static class byDate implements Util.Filter<Check> {
+    public static class byDateAfter implements Util.Filter<Check> {
         private final Util.Filter<Check> inner;
-        private final LocalDate from;
-        private final LocalDate to;
-        public byDate(Util.Filter<Check> inner, LocalDate from, LocalDate to) {
+        private final LocalDate date;
+        public byDateAfter(Util.Filter<Check> inner, LocalDate date) {
             this.inner = inner;
-            this.from = from;
-            this.to = to;
+            this.date = date;
         }
         @Override
         public boolean processFilter(Check obj) {
-            return obj.getDate().getValue().isBefore(to)
-                    && obj.getDate().getValue().isAfter(from)
+            return obj.getDate().getValue().isAfter(date)
+                    && inner.processFilter(obj);
+        }
+    }
+    public static class byDateBefore implements Util.Filter<Check> {
+        private final Util.Filter<Check> inner;
+        private final LocalDate date;
+        public byDateBefore(Util.Filter<Check> inner, LocalDate date) {
+            this.inner = inner;
+            this.date = date;
+        }
+        @Override
+        public boolean processFilter(Check obj) {
+            return obj.getDate().getValue().isBefore(date)
                     && inner.processFilter(obj);
         }
     }
@@ -78,6 +88,32 @@ public class CheckFilter implements Util.Filter<Check>{
         @Override
         public boolean processFilter(Check obj) {
             return obj.isIncome().getValue().equals(income)
+                    && inner.processFilter(obj);
+        }
+    }
+    public static class byAmountHigher implements Util.Filter<Check> {
+        private final Util.Filter<Check> inner;
+        private final double amount;
+        public byAmountHigher(Util.Filter<Check> inner, double amount) {
+            this.inner = inner;
+            this.amount = amount;
+        }
+        @Override
+        public boolean processFilter(Check obj) {
+            return obj.getAmount().getValue() >= amount
+                    && inner.processFilter(obj);
+        }
+    }
+    public static class byAmountLower implements Util.Filter<Check> {
+        private final Util.Filter<Check> inner;
+        private final double amount;
+        public byAmountLower(Util.Filter<Check> inner, double amount) {
+            this.inner = inner;
+            this.amount = amount;
+        }
+        @Override
+        public boolean processFilter(Check obj) {
+            return obj.getAmount().getValue() <= amount
                     && inner.processFilter(obj);
         }
     }
