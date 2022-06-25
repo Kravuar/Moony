@@ -29,6 +29,10 @@
     -fx-border-color: #927bb4;
     -fx-border-width: 0px 2px 3px 2px;
 }
+
+.Mylist-view {
+    -fx-background-color: #f5f5f5;
+}
 .Mylist-view .list-cell:even {
     -fx-background-color: #ffffff;
 }

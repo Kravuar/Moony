@@ -50,13 +50,17 @@ public class StorageController implements Initializable {
         List<Category> categories = filterController.getCategories();
         LocalDate from = filterController.getDateFrom();
         LocalDate to = filterController.getDateTo();
+        boolean income = filterController.getIncome();
+        boolean expense = filterController.getExpense();
 
-        if (descriptionFilter.equals("") && categories.isEmpty() && from == null && to == null)
+        if (descriptionFilter.equals("") && categories.isEmpty() && from == null && to == null && income == expense)
             list.setItems(Model.checks);
 
 
 
         Util.Filter<Check> filter = new CheckFilter();
+        if (income != expense)
+            filter = new CheckFilter.byIncome(filter, income);
         if (from != null || to != null) {
             if (from == null)
                 from = LocalDate.MIN;

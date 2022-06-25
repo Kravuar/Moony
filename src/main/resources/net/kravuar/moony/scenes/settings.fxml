@@ -1,25 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
+
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="400.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.kravuar.moony.scenes.SettingsController">
-   <center>
-      <ListView fx:id="list" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="Mylist-view" stylesheets="@../styles/check.css">
-         <contextMenu>
-            <ContextMenu>
-              <items>
-                <MenuItem mnemonicParsing="false" onAction="#addCategory" text="Add" />
-                  <MenuItem mnemonicParsing="false" onAction="#removeCategory" text="Remove" />
-                  <MenuItem mnemonicParsing="false" onAction="#changeCategory" text="Change" />
-              </items>
-            </ContextMenu>
-         </contextMenu>
-      </ListView>
-   </center>
    <top>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #E5E5E5;" BorderPane.alignment="CENTER">
          <children>
@@ -37,7 +29,34 @@
                   <MaterialDesignIconView glyphName="SETTINGS" />
                </graphic>
             </Label>
+            <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#dropData" styleClass="del" stylesheets="@../styles/button.css" text="Delete All Data" textFill="#732e83">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <graphic>
+                  <MaterialDesignIconView glyphName="DELETE" />
+               </graphic>
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </JFXButton>
          </children>
       </HBox>
    </top>
+   <center>
+      <ListView fx:id="list" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="Mylist-view" stylesheets="@../styles/check.css" BorderPane.alignment="CENTER">
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#addCategory" text="Add" />
+                  <MenuItem mnemonicParsing="false" onAction="#removeCategory" text="Remove" />
+                  <MenuItem mnemonicParsing="false" onAction="#changeCategory" text="Change" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
+      </ListView>
+   </center>
 </BorderPane>

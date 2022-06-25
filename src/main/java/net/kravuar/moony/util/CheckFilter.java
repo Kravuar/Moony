@@ -68,4 +68,17 @@ public class CheckFilter implements Util.Filter<Check>{
                     && inner.processFilter(obj);
         }
     }
+    public static class byIncome implements Util.Filter<Check> {
+        private final Util.Filter<Check> inner;
+        private final boolean income;
+        public byIncome(Util.Filter<Check> inner, boolean income) {
+            this.inner = inner;
+            this.income = income;
+        }
+        @Override
+        public boolean processFilter(Check obj) {
+            return obj.isIncome().getValue().equals(income)
+                    && inner.processFilter(obj);
+        }
+    }
 }

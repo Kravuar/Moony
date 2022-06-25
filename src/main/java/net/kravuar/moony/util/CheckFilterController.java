@@ -1,6 +1,7 @@
 package net.kravuar.moony.util;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXToggleButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -32,7 +33,12 @@ public class CheckFilterController implements Initializable {
     private DatePicker FilterFrom;
     @FXML
     private DatePicker FilterTo;
-
+    @FXML
+    private JFXToggleButton FilterIncome;
+    @FXML
+    private JFXToggleButton FilterExpense;
+    @FXML
+    private ToggleGroup OperationType;
 
     private final ObservableList<Category> categories = FXCollections.observableArrayList();
     private final ListView<Category> categoriesList = new ListView<>();
@@ -73,10 +79,14 @@ public class CheckFilterController implements Initializable {
     public String getDescription(){ return FilterDescription.getText();}
     public LocalDate getDateFrom(){ return FilterFrom.getValue();}
     public LocalDate getDateTo(){ return FilterTo.getValue();}
+    public boolean getIncome(){ return FilterIncome.isSelected();}
+    public boolean getExpense(){ return FilterExpense.isSelected();}
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         categoriesList.setCellFactory(new CellFactory<>("category.fxml", CategoryController.class));
         categoriesList.setMaxHeight(250);
+        categoriesList.setStyle("-fx-background-color: #f5f5f5;");
         ContextMenu menu = new ContextMenu();
         MenuItem add = new MenuItem();
         MenuItem remove = new MenuItem();
@@ -96,9 +106,5 @@ public class CheckFilterController implements Initializable {
         categoriesList.setItems(categories);
 
         popup.getContent().add(categoriesList);
-        popup.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue)
-                popup.hide();
-        });
     }
 }

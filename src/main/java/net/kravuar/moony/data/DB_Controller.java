@@ -35,6 +35,7 @@ public class DB_Controller {
 
     private static final String SQL_INSERT_CHECK = "insert into checks (amount,description,date,income,primaryid,categories) values (?,?,?,?,?,?)";
     private static final String SQL_REMOVE_CHECK = "delete from checks where id = ?";
+    private static final String SQL_DROP_CHECKS = "truncate table checks";
 
 
 
@@ -54,10 +55,9 @@ public class DB_Controller {
     private static final PreparedStatement check_upd_date;
     private static final PreparedStatement check_upd_income;
     private static final PreparedStatement check_upd_primary;
+    private static final PreparedStatement check_upd_categories;
     private static final PreparedStatement check_upd_add;
     private static final PreparedStatement check_upd_remove;
-    private static final PreparedStatement check_upd_categories;
-
 
 
     static {
@@ -68,9 +68,9 @@ public class DB_Controller {
             check_upd_date = App.connection.prepareStatement(SQL_UPDATE_CHECK_DATE);
             check_upd_income = App.connection.prepareStatement(SQL_UPDATE_CHECK_INCOME);
             check_upd_primary = App.connection.prepareStatement(SQL_UPDATE_CHECK_PRIMARY);
+            check_upd_categories = App.connection.prepareStatement(SQL_UPDATE_CHECK_CATEGORIES);
             check_upd_add = App.connection.prepareStatement(SQL_INSERT_CHECK, Statement.RETURN_GENERATED_KEYS);
             check_upd_remove = App.connection.prepareStatement(SQL_REMOVE_CHECK);
-            check_upd_categories = App.connection.prepareStatement(SQL_UPDATE_CHECK_CATEGORIES);
 
             categories_get_color = App.connection.prepareStatement(SQL_GET_CATEGORY_COLOR);
             categories_get_name = App.connection.prepareStatement(SQL_GET_CATEGORY_NAME);
@@ -225,6 +225,9 @@ public class DB_Controller {
         check_upd_remove.setInt(1, check.getId().getValue());
         check_upd_remove.executeUpdate();
     }
-
+    public static void check_upd_drop() throws SQLException {
+        Statement statement = App.connection.createStatement();
+        statement.executeUpdate(SQL_DROP_CHECKS);
+    }
 
 }

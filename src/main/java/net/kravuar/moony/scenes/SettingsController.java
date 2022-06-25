@@ -96,9 +96,22 @@ public class SettingsController implements Initializable {
 
     }
 
+    @FXML
+    void dropData() throws SQLException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("All checks will be deleted.");
+        alert.setTitle("Warning");
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("file:" + ExecutablePath + "/assets/Icon.png"));
+        Optional<ButtonType> result =  alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK)
+            Model.dropData();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         list.setCellFactory(new CellFactory<>("category.fxml", CategoryController.class));
         list.setItems(Model.categories);
+
     }
 }
