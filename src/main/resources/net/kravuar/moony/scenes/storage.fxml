@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.*?>
 <BorderPane minHeight="300.0" minWidth="400.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.kravuar.moony.scenes.StorageController">
    <top>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #E5E5E5;" BorderPane.alignment="CENTER">
@@ -51,6 +51,17 @@
                </padding>
                <graphic>
                   <MaterialDesignIconView glyphName="MINUS" />
+               </graphic>
+            </JFXButton>
+            <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#selection" styleClass="del" stylesheets="@../styles/button.css" text="Select/Unselect All" textFill="#732e83">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+               <graphic>
+                  <MaterialDesignIconView glyphName="SELECT" />
                </graphic>
             </JFXButton>
             <JFXButton fx:id="filterButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#filterPopup" styleClass="find" stylesheets="@../styles/button.css" text="Filter" textFill="#732e83">

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
@@ -24,20 +23,6 @@
                   <MaterialDesignIconView glyphName="SETTINGS" />
                </graphic>
             </Label>
-            <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#dropData" styleClass="del" stylesheets="@../styles/button.css" text="Delete All Data" textFill="#732e83">
-               <font>
-                  <Font size="20.0" />
-               </font>
-               <graphic>
-                  <MaterialDesignIconView glyphName="DELETE" />
-               </graphic>
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets left="5.0" right="5.0" />
-               </padding>
-            </JFXButton>
          </children>
       </HBox>
    </top>

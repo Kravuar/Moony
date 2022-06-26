@@ -25,7 +25,7 @@ public class DB_Controller {
 
 
     // CHECKS
-    private static final String SQL_SELECT_CHEKCS = "select * from checks order by date desc";
+    private static final String SQL_SELECT_CHECKS = "select * from checks order by date desc";
     private static final String SQL_UPDATE_CHECK_AMOUNT = "update checks set amount = ? where id = ?";
     private static final String SQL_UPDATE_CHECK_DESCRIPTION = "update checks set description = ? where id = ?";
     private static final String SQL_UPDATE_CHECK_DATE = "update checks set date = ? where id = ?";
@@ -35,7 +35,6 @@ public class DB_Controller {
 
     private static final String SQL_INSERT_CHECK = "insert into checks (amount,description,date,income,primaryid,categories) values (?,?,?,?,?,?)";
     private static final String SQL_REMOVE_CHECK = "delete from checks where id = ?";
-    private static final String SQL_DROP_CHECKS = "truncate table checks";
 
 
 
@@ -141,7 +140,7 @@ public class DB_Controller {
     // CHECKS
     public static ArrayList<Check> loadChecks() throws SQLException {
         Statement statement = App.connection.createStatement();
-        ResultSet checks = statement.executeQuery(SQL_SELECT_CHEKCS);
+        ResultSet checks = statement.executeQuery(SQL_SELECT_CHECKS);
         ArrayList<Check> result = new ArrayList<>();
         while (checks.next()) {
             Array array = checks.getArray("categories");
@@ -225,9 +224,4 @@ public class DB_Controller {
         check_upd_remove.setInt(1, check.getId().getValue());
         check_upd_remove.executeUpdate();
     }
-    public static void check_upd_drop() throws SQLException {
-        Statement statement = App.connection.createStatement();
-        statement.executeUpdate(SQL_DROP_CHECKS);
-    }
-
 }

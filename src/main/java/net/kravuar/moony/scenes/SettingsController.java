@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import net.kravuar.moony.checks.Category;
@@ -21,6 +22,7 @@ import net.kravuar.moony.util.Util;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -66,19 +68,16 @@ public class SettingsController implements Initializable {
         }
 
     }
-
     @FXML
     void addCategory() throws IOException, SQLException {
         processChange(false);
     }
-
     @FXML
     void changeCategory() throws IOException, SQLException {
         Category selected = list.getSelectionModel().getSelectedItem();
         if (selected != null)
             processChange(true);
     }
-
     @FXML
     void removeCategory() throws SQLException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -88,30 +87,17 @@ public class SettingsController implements Initializable {
         stage.getIcons().add(new Image("file:" + ExecutablePath + "/assets/Icon.png"));
         Optional<ButtonType> result =  alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            Category category = list.getSelectionModel().getSelectedItem();
-            if (category != null) {
+            List<Category> categories = list.getSelectionModel().getSelectedItems().stream().toList();
+            for (Category category: categories)
                 Model.removeCategory(category);
-            }
         }
 
-    }
-
-    @FXML
-    void dropData() throws SQLException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("All checks will be deleted.");
-        alert.setTitle("Warning");
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image("file:" + ExecutablePath + "/assets/Icon.png"));
-        Optional<ButtonType> result =  alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK)
-            Model.dropData();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         list.setCellFactory(new CellFactory<>("category.fxml", CategoryController.class));
         list.setItems(Model.categories);
-
+        list.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 }

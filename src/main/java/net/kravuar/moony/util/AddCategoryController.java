@@ -8,6 +8,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import net.kravuar.moony.checks.Category;
 
+import java.util.Objects;
+
 public class AddCategoryController {
     @FXML
     private ColorPicker color;
@@ -20,6 +22,10 @@ public class AddCategoryController {
     @FXML
     void add(ActionEvent event) {
         String cname = name.getText();
+        if (Objects.equals(cname, "")) {
+            name.setPromptText("Name cant be empty.");
+            return;
+        }
         String cColor = color.getValue().toString();
         category = new Category(cname,cColor, -1);
 

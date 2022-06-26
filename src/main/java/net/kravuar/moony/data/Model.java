@@ -46,10 +46,6 @@ public class Model {
         checks.remove(check);
         DB_Controller.check_upd_remove(check);
     }
-    public static void dropData() throws SQLException {
-        checks.clear();
-        DB_Controller.check_upd_drop();
-    }
 
     public static void updateCategory(Category category, String field) throws SQLException {
         switch (field) {

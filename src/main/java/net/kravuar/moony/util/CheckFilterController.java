@@ -88,14 +88,14 @@ public class CheckFilterController implements Initializable {
     public boolean getExpense(){ return FilterExpense.isSelected();}
     public double getMinAmount(){
         String amount = minAmount.getText();
-        if (amount != null)
+        if (!amount.isEmpty())
             return Double.parseDouble(amount);
         else
             return -1;
     }
     public double getMaxAmount(){
         String amount = maxAmount.getText();
-        if (amount != null)
+        if (!amount.isEmpty())
             return Double.parseDouble(amount);
         else
             return -1;

@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -102,7 +103,28 @@ public class StorageController implements Initializable {
             Model.addCheck(check);
         }
     }
-
+    @FXML
+    void removeCheck() throws SQLException {
+        List<Check> checks = list.getSelectionModel().getSelectedItems().stream().toList();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("Are you sure you want to remove selected checks(" + checks.size() + ")?");
+        alert.setTitle("Warning");
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("file:" + ExecutablePath + "/assets/Icon.png"));
+        Optional<ButtonType> result =  alert.showAndWait();
+        if (result.isPresent() && result.get() != ButtonType.OK)
+            return;
+        for (Check check : checks)
+            Model.removeCheck(check);
+        list.getSelectionModel().clearSelection();
+    }
+    @FXML
+    void selection() {
+        if (list.getSelectionModel().isEmpty())
+            list.getSelectionModel().selectAll();
+        else
+            list.getSelectionModel().clearSelection();
+    }
     @FXML
     void filterPopup() {
         if(!popup.isShowing()){
@@ -115,41 +137,18 @@ public class StorageController implements Initializable {
         }
     }
 
-    @FXML
-    void removeCheck() throws SQLException {
-        Check delCheck = list.getSelectionModel().getSelectedItem();
-        if (delCheck != null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            String income = delCheck.isIncome().getValue() ? "Income" : "Expense";
-            alert.setContentText("Are you sure you want to remove this check?\n"
-                    + income + "  -  "
-                    + delCheck.getPrimaryCategory().getValue().getName().getValue() + "  -  "
-                    + delCheck.getDate().getValue().toString() + "  -  "
-                    + delCheck.getAmount().getValue());
-            alert.setTitle("Warning");
-            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-            stage.getIcons().add(new Image("file:" + ExecutablePath + "/assets/Icon.png"));
-            Optional<ButtonType> result =  alert.showAndWait();
-            if (result.isPresent() && result.get() != ButtonType.OK)
-                return;
 
-            Model.removeCheck(delCheck);
-            list.getItems().removeIf(check -> check.getId() == delCheck.getId());
-            Model.checks.removeIf(check -> check.getId() == delCheck.getId());
-        }
-    }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         list.setCellFactory(new CellFactory<>("check.fxml", CheckController.class));
         list.setItems(Model.checks);
+        list.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         FXMLLoader loader = Util.getLoader("checkFilter.fxml", CheckFilterController.class);
         try { popup.getContent().add(loader.load()); }
         catch (IOException e) { throw new RuntimeException(e); }
         filterController = loader.getController();
     }
-
-
 }
